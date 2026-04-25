@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>flacow.md · Bryan Muñoz</title>
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/cursor.css" />
+  <link rel="stylesheet" href="../styles/ide.css" />
+  <link rel="stylesheet" href="../styles/sections.css" />
+  <link rel="stylesheet" href="../styles/case.css" />
+</head>
+<body>
+
+<div class="ide">
+
+  <header class="titlebar">
+    <div class="titlebar__lights" aria-hidden="true">
+      <span class="titlebar__light titlebar__light--r"></span>
+      <span class="titlebar__light titlebar__light--y"></span>
+      <span class="titlebar__light titlebar__light--g"></span>
+    </div>
+    <div class="titlebar__path">
+      <span class="path-segment">~</span><span style="color:var(--overlay0)">/</span>
+      <span class="path-segment">portfolio</span><span style="color:var(--overlay0)">/</span>
+      <span class="path-segment">projects</span><span style="color:var(--overlay0)">/</span>
+      <span class="path-segment active">flacow.md</span>
+    </div>
+    <button type="button" class="titlebar__lang" data-lang-toggle>
+      <span data-i18n="lang.label" data-es="Idioma" data-en="Lang">Idioma</span>
+      <span class="on">ES</span>
+      <span style="color:var(--overlay0)">·</span>
+      <span style="color:var(--overlay0)">EN</span>
+    </button>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar__rail">
+      <div class="sidebar__rail-item"><span data-i18n="sidebar.explorer" data-es="Explorador" data-en="Explorer">Explorador</span><span class="count">3</span></div>
+    </div>
+    <nav class="sidebar__tree">
+      <div class="tree-folder is-open" data-folder><span class="chev">▸</span><span class="icon">▾</span><span>portfolio</span></div>
+      <div class="tree-children">
+        <a class="tree-file" href="../index.html#hero"><span class="icon ext-md">M↓</span><span>README.md</span></a>
+        <a class="tree-file" href="../index.html#experiencia"><span class="icon ext-json">{ }</span><span>experience.json</span></a>
+        <a class="tree-file" href="../index.html#proyectos"><span class="icon ext-tsx">‹/›</span><span>projects.tsx</span></a>
+        <div class="tree-folder is-open" data-folder><span class="chev">▸</span><span class="icon">▾</span><span>projects/</span></div>
+        <div class="tree-children">
+          <a class="tree-file is-active" href="flacow.html"><span class="icon ext-md">M↓</span><span>flacow.md</span></a>
+          <a class="tree-file" href="flacow.html"><span class="icon ext-md">M↓</span><span>gifex.md</span></a>
+          <a class="tree-file" href="flacow.html"><span class="icon ext-md">M↓</span><span>retos.md</span></a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="tabs">
+      <div class="tab"><span class="dot"></span><span>README.md</span><span class="close">×</span></div>
+      <div class="tab is-active"><span class="dot"></span><span>flacow.md</span><span class="close">×</span></div>
+    </div>
+
+    <div class="editor">
+      <div class="editor__inner">
+        <div class="editor__gutter" id="gutter" aria-hidden="true"></div>
+        <div class="editor__content">
+
+          <div class="readme-wrap">
+
+            <a class="readme-back magnetic" href="../index.html#proyectos">
+              <span class="arr">←</span>
+              <span data-i18n="back" data-es="cd .." data-en="cd ..">cd ..</span>
+              <span style="color:var(--overlay0)">·</span>
+              <span data-i18n="back.label" data-es="volver al portafolio" data-en="back to portfolio">volver al portafolio</span>
+            </a>
+
+            <!-- ===== Hero ===== -->
+            <header class="case-hero">
+              <div class="case-hero__crumbs">
+                <span>~</span><span class="sep">/</span>
+                <span>projects</span><span class="sep">/</span>
+                <span class="here">flacow.md</span>
+              </div>
+
+              <h1 class="case-hero__title reveal">
+                <span class="h">#</span><span class="glitch" data-text="Flacow">Flacow</span>
+              </h1>
+
+              <p class="case-hero__sub reveal" data-i18n="hero.sub"
+                 data-es="La mejor aplicación para registrar tu progreso en el gimnasio y lograr tus objetivos de fuerza. Un side-project nacido de una frustración personal: ningún tracker que probé hablaba el lenguaje del entrenamiento progresivo."
+                 data-en="The best app to track your gym progress and hit your strength goals. A side-project born out of a personal frustration: none of the trackers I tried spoke the language of progressive overload.">
+                La mejor aplicación para registrar tu progreso en el gimnasio y lograr tus objetivos de fuerza. Un side-project nacido de una frustración personal: ningún tracker que probé hablaba el lenguaje del entrenamiento progresivo.
+              </p>
+
+              <div class="case-hero__meta reveal">
+                <div class="pair"><span class="key">role:</span><span class="val">"full-stack"</span></div>
+                <div class="pair"><span class="key">year:</span><span class="val">2024</span></div>
+                <div class="pair"><span class="key">status:</span><span class="val">"live"</span></div>
+                <div class="pair"><span class="key">type:</span><span class="val">"side-project"</span></div>
+              </div>
+
+              <div class="demo-card reveal">
+                <a class="demo-btn demo-btn--primary magnetic" href="https://flacow.bfmu.dev/" target="_blank" rel="noopener">
+                  <span data-i18n="demo.live" data-es="Ver app en vivo" data-en="View live app">Ver app en vivo</span>
+                  <span class="arr">↗</span>
+                </a>
+                <a class="demo-btn magnetic" href="https://github.com/redflox/progresapp-flacow" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18.91-.25 1.89-.38 2.86-.38.97 0 1.95.13 2.86.38 2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.67.8.56 4.56-1.53 7.85-5.83 7.85-10.91C23.5 5.65 18.35.5 12 .5z"/></svg>
+                  <span data-i18n="demo.code" data-es="Ver código" data-en="View source">Ver código</span>
+                  <span class="arr">↗</span>
+                </a>
+              </div>
+
+              <div class="case-hero__media reveal">
+                <div class="case-hero__chrome">
+                  <span class="light l1"></span><span class="light l2"></span><span class="light l3"></span>
+                  <span class="url"><span class="lock">🔒</span>flacow.bfmu.dev</span>
+                </div>
+                <img src="../assets/flacow.png" alt="Flacow landing page" />
+              </div>
+            </header>
+
+            <!-- ===== Body ===== -->
+            <article class="md">
+
+              <h2 id="overview"><span class="hash">##</span><span data-i18n="s.overview" data-es="Overview" data-en="Overview">Overview</span></h2>
+              <p data-i18n="overview.p1"
+                 data-es="Flacow es una aplicación web full-stack para registrar tus entrenamientos. Querías ver si esa serie de press banca de hoy fue mejor que la de hace 6 semanas — pues lo ves de un vistazo, en una gráfica, sin abrir cinco pestañas ni rascar un Excel."
+                 data-en="Flacow is a full-stack web app for logging workouts. You want to know whether today's bench press set was better than the one six weeks ago — you see it at a glance, in a chart, without opening five tabs or wrestling a spreadsheet.">
+                Flacow es una aplicación web full-stack para registrar tus entrenamientos. Querías ver si esa serie de press banca de hoy fue mejor que la de hace 6 semanas — pues lo ves de un vistazo, en una gráfica, sin abrir cinco pestañas ni rascar un Excel.
+              </p>
+              <p data-i18n="overview.p2"
+                 data-es="Construido como side-project, vive en producción en <code>flacow.bfmu.dev</code> y usa una arquitectura monorepo con frontend en React + MaterialUI y backend en NestJS."
+                 data-en="Built as a side-project, it runs in production at <code>flacow.bfmu.dev</code> with a monorepo architecture: React + MaterialUI on the frontend, NestJS on the backend.">
+                Construido como side-project, vive en producción en <code>flacow.bfmu.dev</code> y usa una arquitectura monorepo con frontend en React + MaterialUI y backend en NestJS.
+              </p>
+
+              <h2 id="contexto"><span class="hash">##</span><span data-i18n="s.context" data-es="Contexto y problema" data-en="Context & problem">Contexto y problema</span></h2>
+              <p data-i18n="ctx.p1"
+                 data-es="Llevo varios años entrenando con foco en progresión de carga. La rutina pide saber cuánto levantaste la sesión anterior, en cuántas series, con qué RPE. Probé un par de apps populares y todas fallaban en lo mismo:"
+                 data-en="I've been training with a focus on progressive overload for a few years. The routine demands knowing what you lifted last session, how many sets, at what RPE. I tried a couple of popular apps and they all failed at the same things:">
+                Llevo varios años entrenando con foco en progresión de carga. La rutina pide saber cuánto levantaste la sesión anterior, en cuántas series, con qué RPE. Probé un par de apps populares y todas fallaban en lo mismo:
+              </p>
+              <ul>
+                <li data-i18n="ctx.l1" data-es="UX pensada para casual fitness, no para fuerza" data-en="UX built for casual fitness, not strength training">UX pensada para casual fitness, no para fuerza</li>
+                <li data-i18n="ctx.l2" data-es="Imposible ver tendencias por ejercicio sin pagar premium" data-en="Impossible to see per-exercise trends without going premium">Imposible ver tendencias por ejercicio sin pagar premium</li>
+                <li data-i18n="ctx.l3" data-es="Captura de series lenta — 6 taps para registrar un set" data-en="Slow set capture — 6 taps to log a single set">Captura de series lenta — 6 taps para registrar un set</li>
+              </ul>
+              <blockquote data-i18n="ctx.quote"
+                 data-es="Si una herramienta hace fricción justo en el momento en que la necesitás, dejás de usarla. Y un tracker que no usás no sirve."
+                 data-en="If a tool creates friction at the exact moment you need it, you stop using it. And a tracker you don't use is no tracker at all.">
+                Si una herramienta hace fricción justo en el momento en que la necesitás, dejás de usarla. Y un tracker que no usás no sirve.
+              </blockquote>
+
+              <h2 id="stack"><span class="hash">##</span><span data-i18n="s.stack" data-es="Stack técnico" data-en="Tech stack">Stack técnico</span></h2>
+              <div class="stack-grid">
+                <div class="stack-item"><div class="stack-item__name">React 18 <span class="role">frontend</span></div><div class="stack-item__why" data-i18n="stk.react"
+                  data-es="SPA con Vite + React Router. Usé hooks custom para sincronizar estado de sesión activa de gimnasio."
+                  data-en="SPA with Vite + React Router. Custom hooks sync the active gym-session state.">SPA con Vite + React Router. Usé hooks custom para sincronizar estado de sesión activa.</div></div>
+                <div class="stack-item"><div class="stack-item__name">MaterialUI <span class="role">UI kit</span></div><div class="stack-item__why" data-i18n="stk.mui"
+                  data-es="Theme custom para evitar el look genérico de MUI. Componentes pesados (DataGrid) reescritos."
+                  data-en="Custom theme to avoid the generic MUI look. Heavy components (DataGrid) rewritten.">Theme custom para evitar el look genérico de MUI. Componentes pesados reescritos.</div></div>
+                <div class="stack-item"><div class="stack-item__name">NestJS <span class="role">backend</span></div><div class="stack-item__why" data-i18n="stk.nest"
+                  data-es="API REST modular. Guards de auth, pipes de validación con class-validator, separación clara controller/service/repo."
+                  data-en="Modular REST API. Auth guards, class-validator pipes, clean controller/service/repo separation.">API REST modular. Guards de auth, pipes de validación, separación controller/service/repo.</div></div>
+                <div class="stack-item"><div class="stack-item__name">PostgreSQL <span class="role">db</span></div><div class="stack-item__why" data-i18n="stk.pg"
+                  data-es="Schema con índices compuestos sobre (user_id, exercise_id, date) para queries de tendencia rápidas."
+                  data-en="Schema with composite indexes on (user_id, exercise_id, date) for fast trend queries.">Schema con índices compuestos sobre (user_id, exercise_id, date) para queries de tendencia rápidas.</div></div>
+                <div class="stack-item"><div class="stack-item__name">JWT <span class="role">auth</span></div><div class="stack-item__why" data-i18n="stk.jwt"
+                  data-es="Access + refresh tokens con rotación. Sesión persiste 30 días en mobile."
+                  data-en="Access + refresh tokens with rotation. Session persists 30 days on mobile.">Access + refresh tokens con rotación. Sesión persiste 30 días en mobile.</div></div>
+                <div class="stack-item"><div class="stack-item__name">Docker + Nginx <span class="role">deploy</span></div><div class="stack-item__why" data-i18n="stk.docker"
+                  data-es="docker-compose en un VPS modesto. Nginx como reverse proxy con SSL via Certbot."
+                  data-en="docker-compose on a modest VPS. Nginx as a reverse proxy with SSL via Certbot.">docker-compose en VPS modesto. Nginx como reverse proxy con SSL via Certbot.</div></div>
+              </div>
+
+              <h2 id="arquitectura"><span class="hash">##</span><span data-i18n="s.arch" data-es="Decisiones de arquitectura" data-en="Architecture decisions">Decisiones de arquitectura</span></h2>
+
+              <h3><span class="hash">###</span><span data-i18n="arch.1.title" data-es="Monorepo con apps separadas" data-en="Monorepo with split apps">Monorepo con apps separadas</span></h3>
+              <p data-i18n="arch.1.p"
+                 data-es="Frontend y backend viven en el mismo repo pero como paquetes independientes. Comparten un paquete <code>shared/</code> con tipos TypeScript de los DTOs — un cambio en el contrato compila en ambos lados o explota el build."
+                 data-en="Frontend and backend live in the same repo but as independent packages. They share a <code>shared/</code> package with TypeScript types for DTOs — a contract change either compiles on both sides or breaks the build.">
+                Frontend y backend viven en el mismo repo pero como paquetes independientes. Comparten un paquete <code>shared/</code> con tipos TypeScript de los DTOs — un cambio en el contrato compila en ambos lados o explota el build.
+              </p>
+
+              <h3><span class="hash">###</span><span data-i18n="arch.2.title" data-es="Modelo de datos por sesión" data-en="Session-based data model">Modelo de datos por sesión</span></h3>
+              <p data-i18n="arch.2.p"
+                 data-es="En vez de modelar 'sets' sueltos, todo cuelga de una <code>WorkoutSession</code>. Esto hizo que las queries de progreso sean joins rápidos en lugar de subqueries de agregación cara."
+                 data-en="Instead of modeling loose 'sets', everything hangs off a <code>WorkoutSession</code>. This turned progress queries into fast joins rather than expensive aggregation subqueries.">
+                En vez de modelar 'sets' sueltos, todo cuelga de una <code>WorkoutSession</code>. Esto hizo que las queries de progreso sean joins rápidos en lugar de subqueries de agregación cara.
+              </p>
+
+              <div class="code-block">
+                <div class="code-block__head">
+                  <span><span class="lang">typescript</span> · entities/workout-session.entity.ts</span>
+                  <button class="copy" data-cursor="link">⎘ <span data-i18n="copy" data-es="copiar" data-en="copy">copiar</span></button>
+                </div>
+                <pre><code><span class="kw">@Entity</span>()
+<span class="kw">export class</span> <span class="fn">WorkoutSession</span> {
+  <span class="kw">@PrimaryGeneratedColumn</span>(<span class="str">'uuid'</span>)
+  <span class="var">id</span>: <span class="fn">string</span>;
+
+  <span class="kw">@ManyToOne</span>(() <span class="op">=&gt;</span> <span class="fn">User</span>, { <span class="attr">eager</span>: <span class="num">false</span> })
+  <span class="kw">@Index</span>()
+  <span class="var">user</span>: <span class="fn">User</span>;
+
+  <span class="kw">@OneToMany</span>(() <span class="op">=&gt;</span> <span class="fn">ExerciseLog</span>, log <span class="op">=&gt;</span> log.session, {
+    <span class="attr">cascade</span>: <span class="num">true</span>,
+  })
+  <span class="var">logs</span>: <span class="fn">ExerciseLog</span>[];
+
+  <span class="kw">@CreateDateColumn</span>()
+  <span class="var">startedAt</span>: <span class="fn">Date</span>;
+
+  <span class="kw">@Column</span>({ <span class="attr">type</span>: <span class="str">'jsonb'</span>, <span class="attr">nullable</span>: <span class="num">true</span> })
+  <span class="var">notes</span>: <span class="fn">SessionNotes</span>;
+}</code></pre>
+              </div>
+
+              <h3><span class="hash">###</span><span data-i18n="arch.3.title" data-es="Auth con refresh rotation" data-en="Auth with refresh rotation">Auth con refresh rotation</span></h3>
+              <p data-i18n="arch.3.p"
+                 data-es="Cada refresh emite un nuevo par y revoca el anterior. Si alguien usa un refresh ya canjeado, todos los tokens del usuario se invalidan — heurística simple para detectar robo de token."
+                 data-en="Each refresh issues a new pair and revokes the previous. If anyone uses a refresh that's already been redeemed, all of the user's tokens are invalidated — simple heuristic to flag token theft.">
+                Cada refresh emite un nuevo par y revoca el anterior. Si alguien usa un refresh ya canjeado, todos los tokens del usuario se invalidan — heurística simple para detectar robo de token.
+              </p>
+
+              <h2 id="retos"><span class="hash">##</span><span data-i18n="s.challenges" data-es="Retos enfrentados" data-en="Challenges">Retos enfrentados</span></h2>
+              <ol>
+                <li data-i18n="ch.1"
+                  data-es="<strong>Capturar series rápido sin teclado.</strong> Diseñé inputs con steppers + presets de pesos comunes. De 6 taps por set bajé a 2."
+                  data-en="<strong>Logging sets fast without a keyboard.</strong> I designed steppers + common-weight presets. Went from 6 taps per set down to 2.">
+                  <strong>Capturar series rápido sin teclado.</strong> Diseñé inputs con steppers + presets de pesos comunes. De 6 taps por set bajé a 2.
+                </li>
+                <li data-i18n="ch.2"
+                  data-es="<strong>Offline en gimnasios con WiFi roto.</strong> Service worker + queue de sincronización. La app graba localmente y sincroniza al volver señal."
+                  data-en="<strong>Offline in gyms with broken WiFi.</strong> Service worker + sync queue. The app records locally and syncs when signal returns.">
+                  <strong>Offline en gimnasios con WiFi roto.</strong> Service worker + queue de sincronización. La app graba localmente y sincroniza al volver señal.
+                </li>
+                <li data-i18n="ch.3"
+                  data-es="<strong>Gráficas de progreso que no mientan.</strong> Hubo que decidir cómo mostrar 'mejor set' vs 'volumen total' — terminé exponiendo ambas con un toggle, en lugar de elegir por el usuario."
+                  data-en="<strong>Progress charts that don't lie.</strong> Had to decide how to surface 'top set' vs 'total volume' — ended up exposing both with a toggle instead of choosing for the user.">
+                  <strong>Gráficas de progreso que no mientan.</strong> Hubo que decidir cómo mostrar 'mejor set' vs 'volumen total' — terminé exponiendo ambas con un toggle, en lugar de elegir por el usuario.
+                </li>
+              </ol>
+
+              <h2 id="aprendizajes"><span class="hash">##</span><span data-i18n="s.learnings" data-es="Aprendizajes" data-en="Learnings">Aprendizajes</span></h2>
+              <ul>
+                <li data-i18n="lr.1"
+                  data-es="Construir <em>para vos mismo</em> es el mejor product brief. Cada decisión tiene un usuario real (yo) probando en el gimnasio."
+                  data-en="Building <em>for yourself</em> is the best product brief. Every decision has a real user (me) testing in the gym.">
+                  Construir <em>para vos mismo</em> es el mejor product brief. Cada decisión tiene un usuario real (yo) probando en el gimnasio.
+                </li>
+                <li data-i18n="lr.2"
+                  data-es="NestJS escaló mejor de lo que esperaba para un side-project. La modularización por feature compensa el boilerplate inicial."
+                  data-en="NestJS scaled better than expected for a side-project. Feature-based modularization pays for the initial boilerplate.">
+                  NestJS escaló mejor de lo que esperaba para un side-project. La modularización por feature compensa el boilerplate inicial.
+                </li>
+                <li data-i18n="lr.3"
+                  data-es="La parte difícil de un tracker no es guardar datos — es <em>mostrarlos en el momento justo</em>. Pasé más tiempo en UX de gráficas que en el modelo de datos."
+                  data-en="The hard part of a tracker isn't storing data — it's <em>surfacing it at the right moment</em>. I spent more time on chart UX than on the data model.">
+                  La parte difícil de un tracker no es guardar datos — es <em>mostrarlos en el momento justo</em>. Pasé más tiempo en UX de gráficas que en el modelo de datos.
+                </li>
+              </ul>
+
+              <h2 id="capturas"><span class="hash">##</span><span data-i18n="s.gallery" data-es="Capturas" data-en="Gallery">Capturas</span></h2>
+              <div class="gallery">
+                <figure class="gallery__item"><img src="../assets/flacow.png" alt="Landing"/><figcaption>landing.tsx — hero & value props</figcaption></figure>
+                <figure class="gallery__item" style="display:grid;place-items:center;background:var(--mantle);color:var(--overlay1);font-size:12px;text-align:center;padding:20px;">
+                  <div>
+                    <div style="font-size:32px;margin-bottom:8px;">📊</div>
+                    <div data-i18n="gallery.placeholder.1" data-es="dashboard.tsx — gráficas de progreso (placeholder)" data-en="dashboard.tsx — progress charts (placeholder)">dashboard.tsx — gráficas de progreso (placeholder)</div>
+                  </div>
+                </figure>
+                <figure class="gallery__item" style="display:grid;place-items:center;background:var(--mantle);color:var(--overlay1);font-size:12px;text-align:center;padding:20px;">
+                  <div>
+                    <div style="font-size:32px;margin-bottom:8px;">⚡</div>
+                    <div data-i18n="gallery.placeholder.2" data-es="logger.tsx — captura rápida de series (placeholder)" data-en="logger.tsx — fast set logger (placeholder)">logger.tsx — captura rápida de series (placeholder)</div>
+                  </div>
+                </figure>
+                <figure class="gallery__item" style="display:grid;place-items:center;background:var(--mantle);color:var(--overlay1);font-size:12px;text-align:center;padding:20px;">
+                  <div>
+                    <div style="font-size:32px;margin-bottom:8px;">📱</div>
+                    <div data-i18n="gallery.placeholder.3" data-es="mobile view (placeholder)" data-en="mobile view (placeholder)">mobile view (placeholder)</div>
+                  </div>
+                </figure>
+              </div>
+
+              <h2 id="roadmap"><span class="hash">##</span><span data-i18n="s.roadmap" data-es="Próximos pasos" data-en="Roadmap">Próximos pasos</span></h2>
+              <ul class="roadmap">
+                <li class="done"><span class="box">✓</span><span data-i18n="rm.1" data-es="MVP de logging y dashboard" data-en="Logging & dashboard MVP">MVP de logging y dashboard</span></li>
+                <li class="done"><span class="box">✓</span><span data-i18n="rm.2" data-es="Auth con refresh rotation" data-en="Auth with refresh rotation">Auth con refresh rotation</span></li>
+                <li class="done"><span class="box">✓</span><span data-i18n="rm.3" data-es="Modo offline básico" data-en="Basic offline mode">Modo offline básico</span></li>
+                <li class="doing"><span class="box">▸</span><span data-i18n="rm.4" data-es="Plantillas de rutina (5/3/1, PPL, etc.)" data-en="Routine templates (5/3/1, PPL, etc.)">Plantillas de rutina (5/3/1, PPL, etc.)</span></li>
+                <li><span class="box"></span><span data-i18n="rm.5" data-es="Exportar histórico a CSV" data-en="Export history to CSV">Exportar histórico a CSV</span></li>
+                <li><span class="box"></span><span data-i18n="rm.6" data-es="Compartir progreso público (read-only links)" data-en="Public progress sharing (read-only links)">Compartir progreso público (read-only links)</span></li>
+                <li><span class="box"></span><span data-i18n="rm.7" data-es="App móvil nativa con React Native" data-en="Native mobile app with React Native">App móvil nativa con React Native</span></li>
+              </ul>
+
+              <h2 id="links"><span class="hash">##</span><span data-i18n="s.links" data-es="Links" data-en="Links">Links</span></h2>
+              <p>
+                <a href="https://flacow.bfmu.dev/" target="_blank" rel="noopener">flacow.bfmu.dev</a> —
+                <span data-i18n="links.live" data-es="app en vivo" data-en="live app">app en vivo</span><br/>
+                <a href="https://github.com/redflox/progresapp-flacow" target="_blank" rel="noopener">github.com/redflox/progresapp-flacow</a> —
+                <span data-i18n="links.repo" data-es="código fuente" data-en="source code">código fuente</span>
+              </p>
+
+              <hr style="border:0; border-top:1px dashed var(--surface0); margin: 48px 0 24px;"/>
+
+              <p style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; color:var(--overlay1); font-size:12px;">
+                <a class="readme-back magnetic" href="../index.html#proyectos">
+                  <span class="arr">←</span>
+                  <span data-i18n="back.label" data-es="volver al portafolio" data-en="back to portfolio">volver al portafolio</span>
+                </a>
+                <span>$ <span style="color:var(--peach)">git</span> log <span class="kbd">flacow</span></span>
+              </p>
+
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="statusbar">
+      <span class="statusbar__seg">⌥ main</span>
+      <span class="statusbar__seg">↓ 0 ↑ 0</span>
+      <span class="statusbar__seg">⚠ 0 ✕ 0</span>
+      <span class="statusbar__seg statusbar__push">flacow.md</span>
+      <span class="statusbar__seg">UTF-8</span>
+      <span class="statusbar__seg">LF</span>
+      <span class="statusbar__seg">Markdown</span>
+      <span class="statusbar__seg" id="status-clock">--:--</span>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../scripts/cursor.js"></script>
+<script src="../scripts/shared.js"></script>
+<script>
+function applyLang() {
+  const lang = document.documentElement.getAttribute('data-lang') || 'es';
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const v = el.getAttribute('data-' + lang);
+    if (v != null) el.innerHTML = v;
+  });
+  const onEl = document.querySelector('.titlebar__lang .on');
+  if (onEl) onEl.textContent = lang.toUpperCase();
+  document.documentElement.lang = lang;
+}
+document.addEventListener('lang:changed', applyLang);
+document.addEventListener('DOMContentLoaded', applyLang);
+
+// gutter
+document.addEventListener('DOMContentLoaded', () => {
+  const g = document.getElementById('gutter');
+  if (!g) return;
+  for (let i = 1; i <= 320; i++) {
+    const s = document.createElement('span');
+    s.textContent = i;
+    if (i === 1 || i === 18 || i === 56 || i === 92) s.classList.add('active');
+    g.appendChild(s);
+  }
+});
+
+// folder toggles
+document.addEventListener('click', (e) => {
+  const f = e.target.closest('[data-folder]');
+  if (!f) return;
+  e.preventDefault();
+  const open = f.classList.toggle('is-open');
+  const next = f.nextElementSibling;
+  if (next && next.classList.contains('tree-children')) {
+    next.style.maxHeight = open ? '1000px' : '0px';
+  }
+});
+
+// clock
+function tickClock() {
+  const el = document.getElementById('status-clock');
+  if (!el) return;
+  el.textContent = new Date().toTimeString().slice(0,5);
+}
+tickClock(); setInterval(tickClock, 30000);
+
+// "command executed" entrance for the title
+document.addEventListener('DOMContentLoaded', () => {
+  const editor = document.querySelector('.editor');
+  if (!editor) return;
+  editor.style.opacity = 0;
+  editor.style.transform = 'translateY(10px)';
+  editor.style.transition = 'opacity 600ms cubic-bezier(.2,.7,.2,1), transform 600ms cubic-bezier(.2,.7,.2,1)';
+  requestAnimationFrame(() => {
+    editor.style.opacity = 1;
+    editor.style.transform = 'translateY(0)';
+  });
+});
+</script>
+
+</body>
+</html>
