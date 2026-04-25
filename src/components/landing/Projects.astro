@@ -48,3 +48,8 @@ const projects = (await getCollection('projects'))
     {projects.map((project) => <ProjectListRow project={project} />)}
   </div>
 </section>
+
+<script>
+  import { setupProjTrack } from '../../scripts/proj-track';
+  setupProjTrack();
+</script>
