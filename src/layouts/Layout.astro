@@ -9,13 +9,16 @@ import "../styles/global.css";
 import "../styles/ide.css";
 
 import IdeShell from "../components/ide/IdeShell.astro";
+import type { Crumb, OpenFile } from "../components/ide/types";
 
 interface Props {
   title: string;
   description: string;
+  breadcrumb?: Crumb[];
+  openFiles?: OpenFile[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, breadcrumb, openFiles } = Astro.props;
 ---
 
 <!doctype html>
@@ -46,7 +49,7 @@ const { title, description } = Astro.props;
     </script>
   </head>
   <body>
-    <IdeShell>
+    <IdeShell breadcrumb={breadcrumb} openFiles={openFiles}>
       <slot />
     </IdeShell>
   </body>

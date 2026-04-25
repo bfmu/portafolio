@@ -1,25 +1,20 @@
 ---
 /**
- * File-tree sidebar. Section files are derived from the SECTIONS registry so
- * adding a section there automatically updates the tree.
- *
- * Project files are still hardcoded here — step 5 swaps this stub for
- * `getCollection('projects')`. The shape of the array does not change, only
- * its source, so this module's contract stays stable.
+ * File-tree sidebar. Section files derive from the SECTIONS registry;
+ * project files derive from the `projects` content collection — adding a
+ * project .md is enough for it to appear in every page's sidebar.
  */
+import { getCollection } from 'astro:content';
 import { SECTIONS } from '../../lib/ide-sections';
 import I18n from '../I18n.astro';
 
-interface ProjectFile {
-  name: string;
-  href: string;
-}
-
-const projectFiles: ProjectFile[] = [
-  { name: 'flacow.md', href: '/projects/flacow' },
-  { name: 'gifex.md',  href: '#proyectos' },
-  { name: 'retos.md',  href: '#proyectos' },
-];
+const projects = await getCollection('projects');
+const projectFiles = projects
+  .sort((a, b) => b.data.year - a.data.year)
+  .map((p) => ({
+    name: `${p.slug}.md`,
+    href: `/projects/${p.slug}`,
+  }));
 
 const assetFiles = ['me.jpeg', 'flacow.png', 'gifex.png', 'retos.png'];
 
@@ -45,7 +40,7 @@ const totalCount = SECTIONS.length + projectFiles.length + assetFiles.length;
       {SECTIONS.map((section, i) => (
         <a
           class:list={['tree-file', i === 0 && 'is-active']}
-          href={`#${section.id}`}
+          href={`/#${section.id}`}
           data-tree-key={section.treeKey}
         >
           <span class={`icon ext-${section.iconKind}`}>{section.iconGlyph}</span>

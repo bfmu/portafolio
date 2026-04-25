@@ -1,20 +1,36 @@
 ---
 /**
- * Tab strip mirroring the SECTIONS registry. Active tab follows the
- * `section:change` event broadcast by the active-section observer.
+ * Tab strip. Defaults to one tab per SECTIONS entry (landing page); the
+ * case-study route passes its own list of open files.
+ *
+ * Tabs whose `id` matches a SECTIONS id participate in the active-section
+ * IO; tabs without an `id` keep their initial active state.
  */
 import { SECTIONS } from '../../lib/ide-sections';
+import type { OpenFile } from './types';
+
+interface Props {
+  files?: OpenFile[];
+}
+
+const defaultFiles: OpenFile[] = SECTIONS.map((s, i) => ({
+  id: s.id,
+  file: s.file,
+  isActive: i === 0,
+}));
+
+const { files = defaultFiles } = Astro.props;
 ---
 
 <div class="tabs" role="tablist">
-  {SECTIONS.map((section, i) => (
+  {files.map((file) => (
     <div
-      class:list={['tab', i === 0 && 'is-active']}
+      class:list={['tab', file.isActive && 'is-active']}
       role="tab"
-      data-tab-section={section.id}
+      data-tab-section={file.id}
     >
       <span class="dot" aria-hidden="true"></span>
-      <span>{section.file}</span>
+      <span>{file.file}</span>
       <span class="close" aria-hidden="true">×</span>
     </div>
   ))}

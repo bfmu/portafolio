@@ -1,0 +1,257 @@
+---
+/**
+ * Dynamic case-study route. One static page per `projects` collection
+ * entry. Reads bilingual content from frontmatter and renders both
+ * locales inline; the inactive language is hidden by the global i18n CSS.
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Bilingual from '../../components/Bilingual.astro';
+import BilingualParas from '../../components/BilingualParas.astro';
+import BilingualList from '../../components/BilingualList.astro';
+import '../../styles/case.css';
+import type { Crumb, OpenFile } from '../../components/ide/types';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data, slug } = project;
+
+const breadcrumb: Crumb[] = [
+  { label: '~' },
+  { label: 'portfolio' },
+  { label: 'projects' },
+  { label: `${slug}.md`, isActive: true },
+];
+
+const openFiles: OpenFile[] = [
+  { id: 'hero', file: 'README.md' },
+  { file: `${slug}.md`, isActive: true },
+];
+
+const tocItems = [
+  { id: 'overview',     label: 'overview' },
+  { id: 'context',      label: 'context' },
+  { id: 'architecture', label: 'architecture' },
+  { id: 'challenges',   label: 'challenges' },
+  { id: 'learnings',    label: 'learnings' },
+  ...(data.gallery.length > 0 ? [{ id: 'gallery', label: 'gallery' }] : []),
+  { id: 'roadmap',      label: 'roadmap' },
+  { id: 'links',        label: 'links' },
+];
+
+const cloneCommand = data.repo ? `git clone ${data.repo}` : null;
+const demoHostname = data.demo
+  ? new URL(data.demo).host
+  : null;
+---
+
+<Layout
+  title={`${data.title} · Bryan Muñoz`}
+  description={data.summary.es}
+  breadcrumb={breadcrumb}
+  openFiles={openFiles}
+>
+  <div class="readme-wrap">
+
+    <a class="readme-back" href="/#proyectos">
+      <span class="arr">←</span>
+      <span class="mono">cd ..</span>
+      <span class="dim">·</span>
+      <Bilingual es="volver al portafolio" en="back to portfolio" />
+    </a>
+
+    <header class="case-hero">
+      <div class="case-hero__crumbs">
+        <span>~</span><span class="sep">/</span>
+        <span>projects</span><span class="sep">/</span>
+        <span class="here">{slug}.md</span>
+      </div>
+
+      <h1 class="case-hero__title">
+        <span class="h">#</span>{data.title}
+      </h1>
+
+      <p class="case-hero__sub">
+        <Bilingual es={data.summary.es} en={data.summary.en} />
+      </p>
+
+      <div class="case-hero__meta">
+        <div class="pair"><span class="key">role:</span><span class="val">"{data.role}"</span></div>
+        <div class="pair"><span class="key">year:</span><span class="val">{data.year}</span></div>
+        <div class="pair"><span class="key">status:</span><span class="val">"{data.status}"</span></div>
+      </div>
+
+      <div class="case-hero__stack">
+        {data.stack.map((tech) => <span class="chip">{tech}</span>)}
+      </div>
+
+      <div class="demo-card">
+        {data.demo && (
+          <a class="demo-btn demo-btn--primary" href={data.demo} target="_blank" rel="noopener">
+            <Bilingual es="Ver app en vivo" en="View live app" />
+            <span class="arr">↗</span>
+          </a>
+        )}
+        {data.repo && (
+          <a class="demo-btn" href={data.repo} target="_blank" rel="noopener">
+            <Bilingual es="Ver código" en="View source" />
+            <span class="arr">↗</span>
+          </a>
+        )}
+      </div>
+
+      <div class="case-hero__media">
+        {demoHostname && (
+          <div class="case-hero__chrome">
+            <span class="light l1"></span>
+            <span class="light l2"></span>
+            <span class="light l3"></span>
+            <span class="url"><span class="lock">🔒</span>{demoHostname}</span>
+          </div>
+        )}
+        <Image src={data.cover} alt={`${data.title} cover`} widths={[480, 880, 1200]} sizes="(min-width: 880px) 880px, 100vw" />
+      </div>
+    </header>
+
+    <div class="case-body">
+      <aside class="case-toc" aria-label="Sections">
+        <div class="case-toc__title"><Bilingual es="En esta página" en="On this page" /></div>
+        <ul class="case-toc__list">
+          {tocItems.map((item) => (
+            <li><a class="case-toc__item" href={`#${item.id}`}>{item.label}</a></li>
+          ))}
+        </ul>
+      </aside>
+
+      <article class="md">
+
+        {cloneCommand && (
+          <div class="code-block">
+            <div class="code-block__head">
+              <span><span class="lang">bash</span> · clone repo</span>
+              <button type="button" class="copy" data-copy={cloneCommand}>
+                ⎘ <Bilingual es="copiar" en="copy" />
+              </button>
+            </div>
+            <pre><code><span class="prompt-arrow">$</span> {cloneCommand}</code></pre>
+          </div>
+        )}
+
+        <h2 id="overview"><span class="hash">##</span><span>overview</span></h2>
+        <BilingualParas content={data.sections.overview} />
+
+        <h2 id="context"><span class="hash">##</span><span>context</span></h2>
+        <BilingualParas content={data.sections.context} />
+
+        {data.sections.architecture.length > 0 && (
+          <>
+            <h2 id="architecture"><span class="hash">##</span><span>architecture</span></h2>
+            {data.sections.architecture.map((block) => (
+              <>
+                <h3>
+                  <span class="hash">###</span>
+                  <Bilingual es={block.title.es} en={block.title.en} />
+                </h3>
+                <BilingualParas content={block.body} />
+              </>
+            ))}
+          </>
+        )}
+
+        {data.sections.challenges.length > 0 && (
+          <>
+            <h2 id="challenges"><span class="hash">##</span><span>challenges</span></h2>
+            <BilingualList items={data.sections.challenges} ordered />
+          </>
+        )}
+
+        {data.sections.learnings.length > 0 && (
+          <>
+            <h2 id="learnings"><span class="hash">##</span><span>learnings</span></h2>
+            <BilingualList items={data.sections.learnings} />
+          </>
+        )}
+
+        {data.gallery.length > 0 && (
+          <>
+            <h2 id="gallery"><span class="hash">##</span><span>$ ls -la /screenshots</span></h2>
+            <div class="gallery">
+              {data.gallery.map((item) => (
+                <figure class="gallery__item">
+                  <Image src={item.image} alt={item.caption.es} widths={[400, 800]} sizes="(min-width: 720px) 50vw, 100vw" />
+                  <figcaption>
+                    <Bilingual es={item.caption.es} en={item.caption.en} />
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </>
+        )}
+
+        {data.sections.roadmap.length > 0 && (
+          <>
+            <h2 id="roadmap"><span class="hash">##</span><span>roadmap</span></h2>
+            <ul class="roadmap">
+              {data.sections.roadmap.map((item) => (
+                <li class:list={[
+                  item.status === 'done' && 'is-done',
+                  item.status === 'doing' && 'is-doing',
+                ]}>
+                  <span class="box">
+                    {item.status === 'done' ? '✓' : item.status === 'doing' ? '▸' : ''}
+                  </span>
+                  <Bilingual es={item.text.es} en={item.text.en} />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <h2 id="links"><span class="hash">##</span><span>links</span></h2>
+        <p>
+          {data.demo && (
+            <>
+              <a href={data.demo} target="_blank" rel="noopener">{demoHostname}</a> —
+              <Bilingual es="app en vivo" en="live app" /><br/>
+            </>
+          )}
+          {data.repo && (
+            <>
+              <a href={data.repo} target="_blank" rel="noopener">{data.repo.replace(/^https?:\/\//, '')}</a> —
+              <Bilingual es="código fuente" en="source code" />
+            </>
+          )}
+        </p>
+
+        <hr style="border:0; border-top:1px dashed var(--border); margin: 48px 0 24px;"/>
+
+        <p style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; color:var(--overlay1); font-size:12px;">
+          <a class="readme-back" href="/#proyectos">
+            <span class="arr">←</span>
+            <Bilingual es="volver al portafolio" en="back to portfolio" />
+          </a>
+          <span>$ <span style="color:var(--peach)">git</span> log <span class="dim">{slug}</span></span>
+        </p>
+
+      </article>
+    </div>
+
+  </div>
+</Layout>
+
+<script>
+  import { setupCopyButtons } from '../../scripts/copy-button';
+  setupCopyButtons();
+</script>
