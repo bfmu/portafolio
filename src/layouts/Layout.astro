@@ -1,6 +1,9 @@
 ---
-// Supports weights 300-900
-import "@fontsource-variable/red-hat-display";
+import "@fontsource/cascadia-code/300.css";
+import "@fontsource/cascadia-code/400.css";
+import "@fontsource/cascadia-code/500.css";
+import "@fontsource/cascadia-code/600.css";
+import "@fontsource/cascadia-code/700.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
@@ -41,7 +44,8 @@ const { title, description } = Astro.props;
     color-scheme: light dark;
   }
   html {
-    font-family: "Red Hat Display Variable", sans-serif;
+    font-family: "Cascadia Code", ui-monospace, "SF Mono", Menlo, monospace;
+    font-feature-settings: "calt" 1, "ss01" 1;
     color: white;
 	scroll-behavior: smooth;
   }
