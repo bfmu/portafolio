@@ -1,0 +1,28 @@
+---
+/**
+ * Composition root for the IDE chrome. Page content is injected via <slot />
+ * inside the Editor pane.
+ */
+import TitleBar from './TitleBar.astro';
+import Sidebar from './Sidebar.astro';
+import Tabs from './Tabs.astro';
+import Editor from './Editor.astro';
+import StatusBar from './StatusBar.astro';
+---
+
+<div class="ide" role="application" aria-label="bfmu portfolio IDE">
+  <TitleBar />
+  <Sidebar />
+  <main class="main">
+    <Tabs />
+    <Editor>
+      <slot />
+    </Editor>
+  </main>
+  <StatusBar />
+</div>
+
+<script>
+  import { setupActiveSection } from '../../scripts/active-section';
+  setupActiveSection();
+</script>

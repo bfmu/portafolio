@@ -1,0 +1,32 @@
+---
+/**
+ * Tab strip mirroring the SECTIONS registry. Active tab follows the
+ * `section:change` event broadcast by the active-section observer.
+ */
+import { SECTIONS } from '../../lib/ide-sections';
+---
+
+<div class="tabs" role="tablist">
+  {SECTIONS.map((section, i) => (
+    <div
+      class:list={['tab', i === 0 && 'is-active']}
+      role="tab"
+      data-tab-section={section.id}
+    >
+      <span class="dot" aria-hidden="true"></span>
+      <span>{section.file}</span>
+      <span class="close" aria-hidden="true">×</span>
+    </div>
+  ))}
+</div>
+
+<script>
+  import type { Section } from '../../lib/ide-sections';
+
+  document.addEventListener('section:change', (event) => {
+    const detail = (event as CustomEvent<Section>).detail;
+    document.querySelectorAll<HTMLElement>('.tab[data-tab-section]').forEach((el) => {
+      el.classList.toggle('is-active', el.dataset.tabSection === detail.id);
+    });
+  });
+</script>

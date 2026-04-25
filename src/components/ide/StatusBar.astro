@@ -1,0 +1,36 @@
+---
+/**
+ * Bottom status bar. Reflects the current section (file + language) via
+ * `section:change` events, and runs a self-contained live clock.
+ * Language toggle is added in step 4.
+ */
+import { SECTIONS } from '../../lib/ide-sections';
+
+const initial = SECTIONS[0];
+---
+
+<footer class="statusbar">
+  <span class="statusbar__seg"><span class="ico">⌥</span> main</span>
+  <span class="statusbar__seg">↓ 0 ↑ 0</span>
+  <span class="statusbar__seg">⚠ 0 ✕ 0</span>
+  <span class="statusbar__seg statusbar__push" data-status-file>{initial.file}</span>
+  <span class="statusbar__seg">UTF-8</span>
+  <span class="statusbar__seg">LF</span>
+  <span class="statusbar__seg" data-status-language>{initial.language}</span>
+  <span class="statusbar__seg" data-status-clock>--:--</span>
+</footer>
+
+<script>
+  import { setupStatusClock } from '../../scripts/status-clock';
+  import type { Section } from '../../lib/ide-sections';
+
+  setupStatusClock();
+
+  document.addEventListener('section:change', (event) => {
+    const detail = (event as CustomEvent<Section>).detail;
+    const file = document.querySelector<HTMLElement>('[data-status-file]');
+    const language = document.querySelector<HTMLElement>('[data-status-language]');
+    if (file) file.textContent = detail.file;
+    if (language) language.textContent = detail.language;
+  });
+</script>

@@ -1,0 +1,38 @@
+---
+/**
+ * Window chrome at the top of the IDE shell.
+ * Renders the macOS-style traffic-light dots and a static breadcrumb path.
+ * Language toggle lives in the StatusBar (see step 4).
+ */
+
+interface Crumb {
+  label: string;
+  isActive?: boolean;
+}
+
+const breadcrumb: Crumb[] = [
+  { label: '~' },
+  { label: 'bfmu' },
+  { label: 'portfolio', isActive: true },
+];
+---
+
+<header class="titlebar">
+  <div class="titlebar__lights" aria-hidden="true">
+    <span class="titlebar__light titlebar__light--r"></span>
+    <span class="titlebar__light titlebar__light--y"></span>
+    <span class="titlebar__light titlebar__light--g"></span>
+  </div>
+
+  <div class="titlebar__path" aria-label="path">
+    {breadcrumb.map((crumb, i) => (
+      <>
+        {i > 0 && <span class="titlebar__path-sep">/</span>}
+        <span class:list={['path-segment', crumb.isActive && 'is-active']}>
+          {crumb.label}
+        </span>
+      </>
+    ))}
+    <span class="titlebar__path-branch">— main</span>
+  </div>
+</header>

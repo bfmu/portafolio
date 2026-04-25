@@ -4,10 +4,11 @@ import "@fontsource/cascadia-code/400.css";
 import "@fontsource/cascadia-code/500.css";
 import "@fontsource/cascadia-code/600.css";
 import "@fontsource/cascadia-code/700.css";
-import "../styles/global.css";
 
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "../styles/ide.css";
+
+import IdeShell from "../components/ide/IdeShell.astro";
 
 interface Props {
   title: string;
@@ -22,14 +23,14 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
-    <Header />
-    <slot />
-    <Footer />
+    <IdeShell>
+      <slot />
+    </IdeShell>
   </body>
 </html>
