@@ -1,0 +1,32 @@
+---
+import I18n from '../I18n.astro';
+import { EXPERIENCES } from '../../data/experience';
+---
+
+<section class="section" id="experiencia">
+  <div class="section__heading reveal" data-reveal>
+    <span class="hash">##</span>
+    <h2><I18n key="exp.title" /></h2>
+    <span class="meta">
+      <span class="dim">last_updated:</span>
+      <span class="v">2026-04</span>
+    </span>
+  </div>
+
+  <div class="timeline">
+    {EXPERIENCES.map((job) => (
+      <article class:list={['exp', 'reveal', job.isCurrent && 'is-current']} data-reveal>
+        <div class="exp__date">
+          <span class="marker">▸</span>
+          <I18n key={job.dateKey} />
+        </div>
+        <h3 class="exp__title">
+          <span class="co">{job.title}</span>
+          <span class="at">@</span>
+          <span style="color: var(--peach)">{job.company}</span>
+        </h3>
+        <p class="exp__desc"><I18n key={job.descKey} /></p>
+      </article>
+    ))}
+  </div>
+</section>

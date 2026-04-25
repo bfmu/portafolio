@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Bilingual from '../Bilingual.astro';
+import I18n from '../I18n.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  /** Approximate "size" in the ls -la flavor — purely decorative. */
+  size?: string;
+}
+
+const { project, size = '4.0K' } = Astro.props;
+const { data, slug } = project;
+---
+
+<a class="ls-row" href={`/projects/${slug}`}>
+  <span class="perms">
+    drwx<span class="r">r</span><span class="x">-x</span><span class="r">r</span><span class="x">-x</span>
+  </span>
+  <span class="size">{size}</span>
+  <span class="date">{data.year}</span>
+  <span>
+    <span class="name"><span class="slash">▸</span> {slug}<span class="dim">/</span></span>
+    <span class="desc"><Bilingual es={data.summary.es} en={data.summary.en} /></span>
+    <span class="stack">
+      {data.stack.slice(0, 4).map((tech) => <span class="chip">{tech}</span>)}
+    </span>
+  </span>
+  <span class="open">
+    <I18n key="proj.open" />
+    <span class="arrow">→</span>
+  </span>
+</a>

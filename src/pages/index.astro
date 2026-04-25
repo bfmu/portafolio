@@ -1,80 +1,18 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Badge from "../components/Badge.astro";
-import SectionContainer from "../components/SectionContainer.astro";
-import SocialNetworkButton from "../components/SocialNetworkButton.astro";
-import GithubIcon from "../assets/icons/Github.astro";
-import LinkedInIcon from "../assets/icons/LinkedIn.astro";
-import EmailIcon from "../assets/icons/Email.astro";
-import Experience from "../components/Experience.astro";
-import ExperienceIcon from "../assets/icons/Experience.astro";
-import ConectIcon from '../assets/icons/Conect.astro'
-import Projects from "../components/Projects.astro";
-import Contact from '../components/Contact.astro';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/landing/Hero.astro';
+import Experience from '../components/landing/Experience.astro';
+import Projects from '../components/landing/Projects.astro';
+import Contact from '../components/landing/Contact.astro';
+import '../styles/sections.css';
 ---
 
 <Layout
-  title="Bryan Portfolio - Desarrollador y Programador con 2 años de experiencia"
-  description="Contrata a Bryan Muñoz, un desarrollador y programador con 2 años de experiencia en Bogotá, Colombia. Especializado en crear soluciones de calidad."
+  title="Bryan Muñoz · Software Developer"
+  description="Backend developer at MELI. Bogotá, Colombia. Building quality software, one commit at a time."
 >
-  <main class="px-4">
-    <SectionContainer class="pt-44 pb-24">
-      <h1
-        class="text-white text-2xl sm:text-4xl font-bold flex flex-row gap-x-4 pb-4"
-      >
-        Hey, soy Bryan Muñoz <a
-          href="https://www.linkedin.com/in/bfmunozm96/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex justify-center items-center"
-        >
-          <Badge>Disponible para trabajar</Badge>
-        </a>
-      </h1>
-      <h2 class="text-2xl text-wrap">
-        <span>+2 años de experiencia</span>, <span class="text-yellow-200/90"
-          >Desarrollador.</span
-        >
-        <span class="text-red-200/90">De Bogotá, Colombia 🇨🇴.</span>
-        <span class="opacity-80"
-          >Especializado en crear soluciones de calidad.</span
-        >
-      </h2>
-      <ul class="flex flex-row gap-4 py-4 flex-wrap">
-        <li>
-          <SocialNetworkButton href="https://github.com/redflox">
-            <GithubIcon class="size-6" /> Github
-          </SocialNetworkButton>
-        </li>
-        <li>
-          <SocialNetworkButton href="https://www.linkedin.com/in/bfmunozm96/">
-            <LinkedInIcon class="size-6" /> LinkedIn
-          </SocialNetworkButton>
-        </li>
-        <li>
-          <SocialNetworkButton href="mailto:bfmumo@gmail.com">
-            <EmailIcon class="size-6" /> bfmumo@gmail.com
-          </SocialNetworkButton>
-        </li>
-      </ul>
-    </SectionContainer>
-    <SectionContainer id="experiencia">
-      <h2 class="text-2xl semi-bold text-white pb-6 flex gap-x-3 items-center">
-        <ExperienceIcon class="size-8" /> Experiencia laboral
-      </h2>
-      <Experience />
-    </SectionContainer>
-    <SectionContainer id="proyectos">
-      <h2 class="text-2xl semi-bold text-white pb-6 flex gap-x-3 items-center">
-        <ExperienceIcon class="size-8" /> Proyectos
-      </h2>
-      <Projects/>
-    </SectionContainer>
-    <SectionContainer id="contacto">
-      <h2 class="text-2xl semi-bold text-white  pt-6 flex gap-x-3 items-center">
-        <ConectIcon class="size-8" /> Contáctame
-      </h2>
-      <Contact />
-    </SectionContainer>
-  </main>
+  <Hero />
+  <Experience />
+  <Projects />
+  <Contact />
 </Layout>
