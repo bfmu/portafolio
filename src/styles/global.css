@@ -1,0 +1,214 @@
+/* ============================================================================
+   global.css — design tokens and base styles
+   Two layers:
+     1. Catppuccin Mocha raw palette — single source of truth.
+     2. Semantic aliases (--bg, --accent, ...) — what components consume.
+   Components must NEVER use raw palette names directly. To re-theme, only the
+   semantic layer needs to change.
+   ============================================================================ */
+
+:root {
+  /* ---------- Catppuccin Mocha — raw palette ---------- */
+  --base:      #1e1e2e;
+  --mantle:    #181825;
+  --crust:     #11111b;
+  --surface0:  #313244;
+  --surface1:  #45475a;
+  --surface2:  #585b70;
+  --overlay0:  #6c7086;
+  --overlay1:  #7f849c;
+  --overlay2:  #9399b2;
+  --subtext0:  #a6adc8;
+  --subtext1:  #bac2de;
+  --text:      #cdd6f4;
+
+  --rosewater: #f5e0dc;
+  --flamingo:  #f2cdcd;
+  --pink:      #f5c2e7;
+  --mauve:     #cba6f7;
+  --red:       #f38ba8;
+  --maroon:    #eba0ac;
+  --peach:     #fab387;
+  --yellow:    #f9e2af;
+  --green:     #a6e3a1;
+  --teal:      #94e2d5;
+  --sky:       #89dceb;
+  --sapphire:  #74c7ec;
+  --blue:      #89b4fa;
+  --lavender:  #b4befe;
+
+  /* ---------- Semantic aliases — consume these in components ---------- */
+  --bg:        var(--crust);
+  --bg-elev:   var(--mantle);
+  --bg-panel:  var(--base);
+  --border:    var(--surface0);
+  --muted:     var(--overlay1);
+  --accent:    var(--mauve);
+  --accent-2:  var(--peach);
+
+  /* ---------- Typography ---------- */
+  --mono: 'Cascadia Code', ui-monospace, 'SF Mono', Menlo, monospace;
+  --line-height-mono: 1.55;
+
+  /* ---------- Elevation ---------- */
+  --shadow-soft: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-deep: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 48px rgba(0, 0, 0, 0.5);
+
+  /* ---------- Radii ---------- */
+  --rad-sm: 6px;
+  --rad-md: 10px;
+  --rad-lg: 14px;
+
+  color-scheme: dark;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: var(--line-height-mono);
+  font-feature-settings: "calt" 1, "liga" 1, "ss01" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; }
+
+::selection {
+  background: rgba(180, 190, 254, 0.35);
+  color: var(--text);
+}
+
+/* ---------- Custom scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-elev); }
+::-webkit-scrollbar-thumb {
+  background: var(--surface1);
+  border-radius: 5px;
+  border: 2px solid var(--bg-elev);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--surface2); }
+
+/* ============================================================================
+   Syntax-highlight palette — used by terminal/code blocks across the site.
+   Kept global because they are presentation primitives, not component state.
+   ============================================================================ */
+.kw   { color: var(--mauve); }              /* keyword */
+.fn   { color: var(--blue); }               /* function */
+.str  { color: var(--green); }              /* string */
+.num  { color: var(--peach); }              /* number */
+.com  { color: var(--overlay0); font-style: italic; } /* comment */
+.var  { color: var(--text); }
+.tag  { color: var(--red); }
+.attr { color: var(--yellow); }
+.op   { color: var(--sky); }
+.flag { color: var(--teal); }
+
+.dim   { color: var(--overlay1); }
+.muted { color: var(--subtext0); }
+
+.prompt-user  { color: var(--green); }
+.prompt-host  { color: var(--mauve); }
+.prompt-path  { color: var(--blue); }
+.prompt-arrow { color: var(--peach); }
+
+/* ---------- Blinking terminal cursor block ---------- */
+.cursor-block {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  background: var(--lavender);
+  vertical-align: -0.12em;
+  margin-left: 3px;
+  animation: blink 1.05s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 50%        { opacity: 1; }
+  50.01%, 100%   { opacity: 0; }
+}
+
+/* ---------- Reveal-on-scroll primitive ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 700ms cubic-bezier(.2, .7, .2, 1),
+    transform 700ms cubic-bezier(.2, .7, .2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Magnetic-ish hover baseline ---------- */
+.magnetic {
+  transition: transform 220ms cubic-bezier(.2, .7, .2, 1);
+  will-change: transform;
+}
+
+/* ---------- Glitch (used sparingly) ---------- */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch:hover::before {
+  opacity: 0.85;
+  color: var(--red);
+  transform: translate(-1.5px, 0);
+  animation: glitch-a 1.4s steps(8, end) infinite;
+}
+.glitch:hover::after {
+  opacity: 0.85;
+  color: var(--sky);
+  transform: translate(1.5px, 0);
+  animation: glitch-b 1.6s steps(7, end) infinite;
+}
+@keyframes glitch-a {
+  0%   { clip-path: inset(0 0 80% 0); }
+  20%  { clip-path: inset(40% 0 30% 0); }
+  40%  { clip-path: inset(70% 0 5% 0); }
+  60%  { clip-path: inset(20% 0 60% 0); }
+  80%  { clip-path: inset(50% 0 20% 0); }
+  100% { clip-path: inset(0 0 80% 0); }
+}
+@keyframes glitch-b {
+  0%   { clip-path: inset(60% 0 10% 0); }
+  20%  { clip-path: inset(10% 0 70% 0); }
+  40%  { clip-path: inset(80% 0 5% 0); }
+  60%  { clip-path: inset(35% 0 35% 0); }
+  80%  { clip-path: inset(5% 0 80% 0); }
+  100% { clip-path: inset(60% 0 10% 0); }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}
