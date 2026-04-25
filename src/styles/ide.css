@@ -285,6 +285,27 @@
 .statusbar__seg .ico { font-family: var(--mono); }
 .statusbar__push { margin-left: auto; }
 
+/* Language toggle — visual state is driven by html[data-lang] selectors */
+.statusbar__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.statusbar__lang:hover { background: rgba(0, 0, 0, 0.12); }
+.statusbar__lang-pill { color: rgba(17, 17, 27, 0.45); transition: color 160ms ease; }
+.statusbar__lang-sep  { color: rgba(17, 17, 27, 0.35); }
+html[data-lang="es"] .statusbar__lang-pill[data-lang-pill="es"],
+html[data-lang="en"] .statusbar__lang-pill[data-lang-pill="en"],
+html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
+  color: var(--bg);
+  font-weight: 800;
+}
+
 /* ---------- Mobile collapse --------------------------------------------- */
 @media (max-width: 880px) {
   .ide {

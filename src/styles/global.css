@@ -202,6 +202,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   100% { clip-path: inset(60% 0 10% 0); }
 }
 
+/* ============================================================================
+   i18n — show/hide translations based on html[data-lang].
+   No JS swap is involved; the inline init script in <head> sets data-lang
+   synchronously before paint, so the user only ever sees the correct copy.
+   ============================================================================ */
+.i18n > [lang] { display: inline; }
+html[data-lang="es"] .i18n > [lang="en"],
+html:not([data-lang]) .i18n > [lang="en"] { display: none; }
+html[data-lang="en"] .i18n > [lang="es"] { display: none; }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

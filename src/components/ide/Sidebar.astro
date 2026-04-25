@@ -8,6 +8,7 @@
  * its source, so this module's contract stays stable.
  */
 import { SECTIONS } from '../../lib/ide-sections';
+import I18n from '../I18n.astro';
 
 interface ProjectFile {
   name: string;
@@ -28,7 +29,7 @@ const totalCount = SECTIONS.length + projectFiles.length + assetFiles.length;
 <aside class="sidebar" aria-label="Explorer">
   <div class="sidebar__rail">
     <div class="sidebar__rail-item">
-      <span>Explorador</span>
+      <span><I18n key="sidebar.explorer" /></span>
       <span class="count">{totalCount}</span>
     </div>
   </div>

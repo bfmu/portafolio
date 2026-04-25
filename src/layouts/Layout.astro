@@ -19,7 +19,7 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -27,6 +27,23 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    {/*
+      Inline pre-paint language init: reads localStorage before any styles or
+      content render so the matching translation is visible from frame zero.
+      Must stay tiny and dependency-free — Astro emits it as-is via is:inline.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('bf-lang');
+          var lang = saved === 'en' ? 'en' : 'es';
+          var html = document.documentElement;
+          html.setAttribute('data-lang', lang);
+          html.setAttribute('lang', lang);
+        } catch (e) { /* private mode / sandboxed iframe */ }
+      })();
+    </script>
   </head>
   <body>
     <IdeShell>

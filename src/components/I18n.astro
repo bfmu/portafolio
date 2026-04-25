@@ -1,0 +1,24 @@
+---
+/**
+ * Renders both translations inline; CSS in global.css hides the inactive
+ * one based on `html[data-lang]`. This avoids any JS-driven content swap
+ * and eliminates flash-of-unlocalized-content by construction.
+ *
+ * Usage: <I18n key="hero.session" />
+ *
+ * For attribute values (alt, title, ...) import strings directly:
+ *   import { strings } from "../i18n/strings";
+ */
+import { strings, type StringKey } from '../i18n/strings';
+
+interface Props {
+  key: StringKey;
+}
+
+const { key } = Astro.props;
+---
+
+<span class="i18n">
+  <span lang="es">{strings.es[key]}</span>
+  <span lang="en">{strings.en[key]}</span>
+</span>

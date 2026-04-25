@@ -1,10 +1,14 @@
 ---
 /**
  * Bottom status bar. Reflects the current section (file + language) via
- * `section:change` events, and runs a self-contained live clock.
- * Language toggle is added in step 4.
+ * `section:change` events, runs a self-contained live clock, and hosts the
+ * ES/EN language toggle.
+ *
+ * The toggle's visual state is purely CSS (selectors on html[data-lang]) —
+ * the click handler only flips the root attribute and persists.
  */
 import { SECTIONS } from '../../lib/ide-sections';
+import I18n from '../I18n.astro';
 
 const initial = SECTIONS[0];
 ---
@@ -18,14 +22,29 @@ const initial = SECTIONS[0];
   <span class="statusbar__seg">UTF-8</span>
   <span class="statusbar__seg">LF</span>
   <span class="statusbar__seg" data-status-language>{initial.language}</span>
+
+  <button
+    type="button"
+    class="statusbar__lang"
+    data-lang-toggle
+    aria-label="Toggle language"
+  >
+    <span class="statusbar__lang-label"><I18n key="lang.label" /></span>
+    <span class="statusbar__lang-pill" data-lang-pill="es">ES</span>
+    <span class="statusbar__lang-sep">·</span>
+    <span class="statusbar__lang-pill" data-lang-pill="en">EN</span>
+  </button>
+
   <span class="statusbar__seg" data-status-clock>--:--</span>
 </footer>
 
 <script>
   import { setupStatusClock } from '../../scripts/status-clock';
+  import { setupLangToggle } from '../../scripts/lang-toggle';
   import type { Section } from '../../lib/ide-sections';
 
   setupStatusClock();
+  setupLangToggle();
 
   document.addEventListener('section:change', (event) => {
     const detail = (event as CustomEvent<Section>).detail;
