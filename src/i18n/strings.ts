@@ -12,6 +12,7 @@ const es = {
   // ---------- shell
   'lang.label': 'Idioma',
   'sidebar.explorer': 'Explorador',
+  'status.terminal': 'Terminal',
 
   // ---------- hero
   'hero.session': 'sesión iniciada · listo para construir cosas',
@@ -51,6 +52,7 @@ const es = {
 const en = {
   'lang.label': 'Lang',
   'sidebar.explorer': 'Explorer',
+  'status.terminal': 'Terminal',
 
   'hero.session': 'session started · ready to build things',
   'hero.currently': '"Backend dev @ Mercado Libre"',

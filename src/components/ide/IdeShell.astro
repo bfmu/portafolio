@@ -9,6 +9,7 @@ import Sidebar from './Sidebar.astro';
 import Tabs from './Tabs.astro';
 import Editor from './Editor.astro';
 import StatusBar from './StatusBar.astro';
+import Terminal from './Terminal.astro';
 import type { Crumb, OpenFile } from './types';
 
 interface Props {
@@ -27,6 +28,7 @@ const { breadcrumb, openFiles } = Astro.props;
     <Editor>
       <slot />
     </Editor>
+    <Terminal />
   </main>
   <StatusBar />
 </div>

@@ -18,6 +18,16 @@ const initial = SECTIONS[0];
   <span class="statusbar__seg">↓ 0 ↑ 0</span>
   <span class="statusbar__seg">⚠ 0 ✕ 0</span>
   <span class="statusbar__seg statusbar__push" data-status-file>{initial.file}</span>
+  <button
+    type="button"
+    class="statusbar__seg statusbar__terminal-btn"
+    data-terminal-toggle
+    aria-label="Toggle terminal"
+    title="Ctrl+`"
+  >
+    <span aria-hidden="true">▣</span>
+    <I18n key="status.terminal" />
+  </button>
   <span class="statusbar__seg">Ln 1, Col 1</span>
   <span class="statusbar__seg">UTF-8</span>
   <span class="statusbar__seg">LF</span>
