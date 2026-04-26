@@ -5,7 +5,7 @@
  * locales inline; the inactive language is hidden by the global i18n CSS.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Bilingual from '../../components/Bilingual.astro';
 import BilingualParas from '../../components/BilingualParas.astro';
@@ -55,11 +55,22 @@ const cloneCommand = data.repo ? `git clone ${data.repo}` : null;
 const demoHostname = data.demo
   ? new URL(data.demo).host
   : null;
+
+// Optimized social-preview image derived from the project cover.
+const ogImageAsset = await getImage({
+  src: data.cover,
+  format: 'jpg',
+  width: 1200,
+  height: 630,
+  fit: 'cover',
+});
 ---
 
 <Layout
   title={`${data.title} · Bryan Muñoz`}
   description={data.summary.es}
+  ogImage={ogImageAsset.src}
+  ogType="article"
   breadcrumb={breadcrumb}
   openFiles={openFiles}
 >

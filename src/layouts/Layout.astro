@@ -15,27 +15,59 @@ import type { Crumb, OpenFile } from "../components/ide/types";
 interface Props {
   title: string;
   description: string;
+  /** Absolute or root-relative URL of the social preview image. */
+  ogImage?: string;
+  /** OG type — `website` for the landing, `article` for case studies. */
+  ogType?: 'website' | 'article';
   breadcrumb?: Crumb[];
   openFiles?: OpenFile[];
 }
 
-const { title, description, breadcrumb, openFiles } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = '/og.png',
+  ogType = 'website',
+  breadcrumb,
+  openFiles,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
 ---
 
 <!doctype html>
 <html lang="es" data-lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonical} />
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     {/*
-      Inline pre-paint language init: reads localStorage before any styles or
-      content render so the matching translation is visible from frame zero.
-      Must stay tiny and dependency-free — Astro emits it as-is via is:inline.
+      Pre-paint language init: reads localStorage before any styles or content
+      render so the matching translation is visible from frame zero.
     */}
     <script is:inline>
       (function () {
