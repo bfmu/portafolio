@@ -19,6 +19,12 @@ export function setupActiveSection(): void {
 
   if (targets.length === 0) return;
 
+  // A thin band ~30% from the top of the viewport. Any section whose
+  // vertical extent overlaps this band counts as active. Threshold 0
+  // means "any pixel"; together they handle tall and short sections
+  // uniformly — the previous "30% of section visible" version skipped
+  // sections taller than the viewport (e.g. proyectos with the scroller
+  // + ls -la list).
   const io = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -30,7 +36,7 @@ export function setupActiveSection(): void {
         );
       }
     },
-    { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' }
+    { threshold: 0, rootMargin: '-30% 0px -65% 0px' }
   );
 
   targets.forEach((el) => io.observe(el));

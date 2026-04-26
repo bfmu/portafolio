@@ -181,7 +181,10 @@
   color: var(--overlay1);
   position: relative;
   white-space: nowrap;
+  cursor: pointer;
+  transition: color 160ms, background 160ms;
 }
+.tab:hover { color: var(--text); }
 .tab.is-active {
   background: var(--bg-panel);
   color: var(--text);
