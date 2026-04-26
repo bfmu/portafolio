@@ -211,8 +211,11 @@
   align-items: center;
   justify-content: center;
   color: var(--overlay0);
+  opacity: 0.45;
+  transition: opacity 160ms, background 160ms, color 160ms;
 }
-.tab .close:hover {
+.tab[data-tab-close-href] .close { opacity: 1; cursor: pointer; }
+.tab[data-tab-close-href] .close:hover {
   background: var(--border);
   color: var(--text);
 }

@@ -14,4 +14,6 @@ export interface OpenFile {
   id?: string;
   file: string;
   isActive?: boolean;
+  /** When set, clicking the tab's X navigates here. */
+  closeHref?: string;
 }
