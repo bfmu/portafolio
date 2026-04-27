@@ -1,0 +1,50 @@
+---
+/**
+ * Composition root for the IDE chrome. Optional `breadcrumb` and `openFiles`
+ * props forward to TitleBar / Tabs so sub-pages can override them without
+ * caring about the layout grid.
+ */
+import TitleBar from './TitleBar.astro';
+import Sidebar from './Sidebar.astro';
+import Tabs from './Tabs.astro';
+import Editor from './Editor.astro';
+import StatusBar from './StatusBar.astro';
+import Terminal from './Terminal.astro';
+import type { Crumb, OpenFile } from './types';
+
+interface Props {
+  breadcrumb?: Crumb[];
+  openFiles?: OpenFile[];
+}
+
+const { breadcrumb, openFiles } = Astro.props;
+---
+
+<div class="ide" role="application" aria-label="bfmu portfolio IDE">
+  <TitleBar breadcrumb={breadcrumb} />
+  <Sidebar />
+  <div class="sidebar__backdrop" aria-hidden="true"></div>
+  <main class="main">
+    <Tabs files={openFiles} />
+    <Editor>
+      <slot />
+    </Editor>
+    <Terminal />
+  </main>
+  <StatusBar />
+</div>
+
+<script>
+  import { setupActiveSection } from '../../scripts/active-section';
+  import { setupCustomCursor } from '../../scripts/cursor';
+  import { setupReveal } from '../../scripts/reveal';
+  import { setupSidebarDrawer } from '../../scripts/sidebar-drawer';
+  import { setupMagnetic } from '../../scripts/magnetic';
+  import { setupTerminalHint } from '../../scripts/terminal-hint';
+  setupActiveSection();
+  setupCustomCursor();
+  setupReveal();
+  setupSidebarDrawer();
+  setupMagnetic();
+  setupTerminalHint();
+</script>

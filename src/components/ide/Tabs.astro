@@ -1,0 +1,83 @@
+---
+/**
+ * Tab strip. Defaults to one tab per SECTIONS entry (landing page); the
+ * case-study route passes its own list of open files.
+ *
+ * Tabs whose `id` matches a SECTIONS id participate in the active-section
+ * IO; tabs without an `id` keep their initial active state.
+ *
+ * Click on a tab body scrolls to / navigates to the corresponding section.
+ */
+import { SECTIONS } from '../../lib/ide-sections';
+import type { OpenFile } from './types';
+
+interface Props {
+  files?: OpenFile[];
+}
+
+const defaultFiles: OpenFile[] = SECTIONS.map((s, i) => ({
+  id: s.id,
+  file: s.file,
+  isActive: i === 0,
+}));
+
+const { files = defaultFiles } = Astro.props;
+---
+
+<div class="tabs" role="tablist">
+  {files.map((file) => (
+    <div
+      class:list={['tab', file.isActive && 'is-active']}
+      role="tab"
+      tabindex="0"
+      data-tab-section={file.id}
+      data-tab-close-href={file.closeHref}
+    >
+      <span class="dot" aria-hidden="true"></span>
+      <span class="tab__label">{file.file}</span>
+      <span class="close" aria-label="Close tab">×</span>
+    </div>
+  ))}
+</div>
+
+<script>
+  import type { Section } from '../../lib/ide-sections';
+
+  // Active state mirrors the section:change broadcast.
+  document.addEventListener('section:change', (event) => {
+    const detail = (event as CustomEvent<Section>).detail;
+    document.querySelectorAll<HTMLElement>('.tab[data-tab-section]').forEach((el) => {
+      el.classList.toggle('is-active', el.dataset.tabSection === detail.id);
+    });
+  });
+
+  // Click on a tab body → scroll to that section. If the section doesn't
+  // exist on the current page (e.g. clicking README.md while on a case
+  // study), fall back to navigating with the hash.
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element | null;
+    if (!target || target.closest('.tab .close')) return;
+    const tab = target.closest<HTMLElement>('.tab[data-tab-section]');
+    if (!tab) return;
+    const id = tab.dataset.tabSection;
+    if (!id) return;
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.assign(`/#${id}`);
+    }
+  });
+
+  // Click on the X → if the tab carries a close-href, navigate there.
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element | null;
+    const close = target?.closest<HTMLElement>('.tab .close');
+    if (!close) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const tab = close.closest<HTMLElement>('.tab');
+    const href = tab?.dataset.tabCloseHref;
+    if (href) window.location.assign(href);
+  });
+</script>

@@ -1,0 +1,50 @@
+/* ============================================================================
+   cursor.css — custom cursor (only takes over on interactive zones)
+   - Default: native system cursor (no custom block)
+   - Hover on link/button: pointing-finger hand
+   - Hover on [data-cursor="drag"]: open grab hand → closed on mousedown
+   ============================================================================ */
+
+@media (hover: hover) and (pointer: fine) {
+  a, button, [role="button"],
+  [data-cursor="link"], [data-cursor="drag"] {
+    cursor: none !important;
+  }
+}
+
+.bf-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-9999px, -9999px, 0);
+  display: none;
+  will-change: transform;
+}
+.bf-cursor.is-link,
+.bf-cursor.is-drag { display: block; }
+.bf-cursor.is-hidden { display: none !important; }
+
+.bf-cursor__icon {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Priority resolution when is-link and is-drag stack on a card-in-track:
+ *   - link wins on hover (the card IS clickable)
+ *   - closed grab hand still wins once a drag is committed (mousedown)
+ *   - bare drag zones (track gaps) show the open hand
+ */
+.bf-cursor.is-link:not(.is-drag.is-grabbing) .bf-cursor__icon--point { display: block; }
+.bf-cursor.is-drag:not(.is-link):not(.is-grabbing) .bf-cursor__icon--open { display: block; }
+.bf-cursor.is-drag.is-grabbing .bf-cursor__icon--closed { display: block; }
+
+@media (hover: none), (pointer: coarse) {
+  .bf-cursor { display: none !important; }
+}

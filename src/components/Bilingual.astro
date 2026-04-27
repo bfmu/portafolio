@@ -1,0 +1,28 @@
+---
+/**
+ * Inline bilingual span. Like <I18n /> but takes raw strings instead of a
+ * registry key — useful for dynamic content (e.g. data from content
+ * collections). When `html` is true the strings may contain inline HTML
+ * (<code>, <em>, <strong>, ...) and are rendered with set:html.
+ */
+
+interface Props {
+  es: string;
+  en: string;
+  html?: boolean;
+}
+
+const { es, en, html = false } = Astro.props;
+---
+
+{html ? (
+  <span class="i18n">
+    <span lang="es" set:html={es}></span>
+    <span lang="en" set:html={en}></span>
+  </span>
+) : (
+  <span class="i18n">
+    <span lang="es">{es}</span>
+    <span lang="en">{en}</span>
+  </span>
+)}

@@ -1,0 +1,25 @@
+---
+/**
+ * Renders a multi-paragraph bilingual block as a series of <p> elements,
+ * one per paragraph index. Each paragraph carries both translations; the
+ * inactive lang is hidden by the global i18n CSS rules.
+ *
+ * The two locale arrays MUST have the same length — enforced by zod at
+ * content-load time, so we trust the invariant here.
+ */
+import type { BilingualParas as Content } from '../lib/bilingual';
+
+interface Props {
+  content: Content;
+  class?: string;
+}
+
+const { content, class: className } = Astro.props;
+---
+
+{content.es.map((para, i) => (
+  <p class:list={['i18n', className]}>
+    <span lang="es" set:html={para}></span>
+    <span lang="en" set:html={content.en[i] ?? para}></span>
+  </p>
+))}

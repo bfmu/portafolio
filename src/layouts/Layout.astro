@@ -1,59 +1,89 @@
 ---
-// Supports weights 300-900
-import "@fontsource-variable/red-hat-display";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+// Only weights actually used by the site — see grep for font-weight in styles/.
+import "@fontsource/cascadia-code/400.css";
+import "@fontsource/cascadia-code/600.css";
+import "@fontsource/cascadia-code/700.css";
+
+import "../styles/global.css";
+import "../styles/ide.css";
+import "../styles/terminal.css";
+import "../styles/cursor.css";
+
+import IdeShell from "../components/ide/IdeShell.astro";
+import type { Crumb, OpenFile } from "../components/ide/types";
 
 interface Props {
   title: string;
   description: string;
+  /** Absolute or root-relative URL of the social preview image. */
+  ogImage?: string;
+  /** OG type — `website` for the landing, `article` for case studies. */
+  ogType?: 'website' | 'article';
+  breadcrumb?: Crumb[];
+  openFiles?: OpenFile[];
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = '/og.png',
+  ogType = 'website',
+  breadcrumb,
+  openFiles,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body class="relative h-full w-full bg-slate-950">
-    <Header />
-    <slot />
-    <div
-      class="-z-10 absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"
-    >
-    </div>
-    <div
-      class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
-    >
-    </div>
-  </body>
-  <Footer />
-</html>
-<style is:global>
-  :root {
-    color-scheme: light dark;
-  }
-  html {
-    font-family: "Red Hat Display Variable", sans-serif;
-    color: white;
-	scroll-behavior: smooth;
-  }
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 
-  @media(prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-  }
-</style>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {/*
+      Pre-paint language init: reads localStorage before any styles or content
+      render so the matching translation is visible from frame zero.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('bf-lang');
+          var lang = saved === 'en' ? 'en' : 'es';
+          var html = document.documentElement;
+          html.setAttribute('data-lang', lang);
+          html.setAttribute('lang', lang);
+        } catch (e) { /* private mode / sandboxed iframe */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <IdeShell breadcrumb={breadcrumb} openFiles={openFiles}>
+      <slot />
+    </IdeShell>
+  </body>
+</html>

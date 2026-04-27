@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Bilingual from '../Bilingual.astro';
+import I18n from '../I18n.astro';
+import { resolveProjectHref, isExternalProjectHref } from '../../lib/project-link';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  /** Approximate "size" in the ls -la flavor — purely decorative. */
+  size?: string;
+}
+
+const { project, size = '4.0K' } = Astro.props;
+const { data, slug } = project;
+
+const href = resolveProjectHref(project);
+const external = isExternalProjectHref(project);
+---
+
+<a
+  class="ls-row"
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
+  <span class="perms">
+    drwx<span class="r">r</span><span class="x">-x</span><span class="r">r</span><span class="x">-x</span>
+  </span>
+  <span class="size">{size}</span>
+  <span class="date">{data.year}</span>
+  <span>
+    <span class="name"><span class="slash">▸</span> {slug}<span class="dim">/</span></span>
+    <span class="desc"><Bilingual es={data.summary.es} en={data.summary.en} /></span>
+    <span class="stack">
+      {data.stack.slice(0, 4).map((tech) => <span class="chip">{tech}</span>)}
+    </span>
+  </span>
+  <span class="open">
+    {data.caseStudy ? <I18n key="proj.open" /> : <Bilingual es="visitar" en="visit" />}
+    <span class="arrow">{external ? '↗' : '→'}</span>
+  </span>
+</a>

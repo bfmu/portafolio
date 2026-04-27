@@ -1,0 +1,195 @@
+/* ============================================================================
+   terminal.css — collapsible bottom panel inside the main editor pane
+   States: closed (hidden), open (~33% of main), max (~80% of main).
+   ============================================================================ */
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: clamp(180px, 33%, 360px);
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--subtext1);
+  overflow: hidden;
+}
+.terminal[hidden] { display: none !important; }
+.terminal[data-state="max"] {
+  height: clamp(360px, 80%, 80%);
+}
+
+.terminal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  height: 32px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+  color: var(--overlay1);
+  flex-shrink: 0;
+}
+.terminal__tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.terminal__tab {
+  padding: 4px 10px;
+  border-radius: 3px 3px 0 0;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-bottom-color: transparent;
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.terminal__tab .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.terminal__actions {
+  display: flex;
+  gap: 4px;
+}
+.terminal__actions button {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 3px;
+  color: var(--overlay1);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 160ms, color 160ms;
+}
+.terminal__actions button:hover {
+  background: var(--surface0);
+  color: var(--text);
+}
+
+.terminal__output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  line-height: 1.7;
+  scroll-behavior: smooth;
+}
+.terminal__line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.terminal__line a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-color: rgba(137, 180, 250, 0.4);
+  text-underline-offset: 3px;
+}
+.terminal__line a:hover { text-decoration-color: var(--blue); }
+
+.terminal__prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.terminal__prompt input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+}
+.terminal__prompt input::placeholder { color: var(--overlay0); }
+
+.statusbar__terminal-btn {
+  cursor: pointer;
+  transition: background 160ms;
+  border-radius: 3px;
+  padding: 0 6px;
+}
+.statusbar__terminal-btn:hover { background: rgba(0, 0, 0, 0.12); }
+
+/* ---------- First-visit hint toast (Ctrl+`) ----------------------------- */
+.terminal-hint {
+  position: fixed;
+  right: 16px;
+  bottom: 40px;
+  z-index: 200;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--subtext1);
+  box-shadow: var(--shadow-deep);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(.2, .7, .2, 1);
+}
+.terminal-hint.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.terminal-hint__kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  color: var(--text);
+  font-size: 11px;
+}
+.terminal-hint__plus { color: var(--overlay0); font-size: 11px; }
+.terminal-hint__text { color: var(--subtext0); }
+.terminal-hint__close {
+  margin-left: 4px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 3px;
+  color: var(--overlay1);
+  font-size: 14px;
+}
+.terminal-hint__close:hover { background: var(--surface0); color: var(--text); }
+
+@media (max-width: 720px) {
+  .terminal-hint { display: none; }
+}
+
+/* ---------- Mobile: full-screen overlay --------------------------------- */
+@media (max-width: 720px) {
+  .terminal {
+    position: fixed;
+    inset: 0;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    z-index: 150;
+    border-top: 0;
+  }
+  .terminal[data-state="max"] {
+    height: 100dvh !important;
+  }
+  .terminal__head { height: 40px; }
+}

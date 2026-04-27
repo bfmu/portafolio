@@ -1,0 +1,399 @@
+/* ============================================================================
+   ide.css — IDE chrome (titlebar, sidebar, tabs, editor, statusbar)
+   Uses semantic aliases from global.css. Component-specific palette colors
+   (lavender, peach, ...) are pulled from the raw layer for accents.
+   ============================================================================ */
+
+.ide {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 36px 1fr 24px;
+  grid-template-areas:
+    "titlebar titlebar"
+    "sidebar  main"
+    "status   status";
+  height: 100vh;
+  width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* ---------- Title bar ---------------------------------------------------- */
+.titlebar {
+  grid-area: titlebar;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--bg);
+  font-size: 12px;
+  color: var(--subtext0);
+}
+.titlebar__lights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.titlebar__light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.titlebar__light--r { background: var(--red); }
+.titlebar__light--y { background: var(--yellow); }
+.titlebar__light--g { background: var(--green); }
+
+.titlebar__path {
+  margin-left: auto;
+  margin-right: auto;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  gap: 4px;
+  align-items: baseline;
+}
+.titlebar__path .path-segment { color: var(--overlay1); }
+.titlebar__path .path-segment.is-active { color: var(--text); }
+.titlebar__path-sep { color: var(--overlay0); }
+.titlebar__path-branch { color: var(--overlay0); margin-left: 8px; }
+
+.titlebar__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: 6px;
+  border-radius: 4px;
+  color: var(--subtext0);
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 160ms, color 160ms;
+}
+.titlebar__hamburger:hover { background: var(--bg-panel); color: var(--text); }
+
+/* ---------- Sidebar ------------------------------------------------------ */
+.sidebar {
+  grid-area: sidebar;
+  background: var(--bg-elev);
+  border-right: 1px solid var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar__rail {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--bg);
+}
+.sidebar__rail-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--overlay1);
+  text-transform: uppercase;
+}
+.sidebar__rail-item .count { color: var(--overlay0); font-size: 10px; }
+
+.sidebar__tree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0 12px;
+  font-size: 13px;
+}
+
+.tree-folder {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  color: var(--subtext1);
+  user-select: none;
+}
+.tree-folder .chev {
+  display: inline-block;
+  width: 10px;
+  color: var(--overlay0);
+  transition: transform 200ms ease;
+}
+.tree-folder.is-open .chev { transform: rotate(90deg); }
+.tree-folder .icon { color: var(--blue); }
+
+.tree-children {
+  display: block;
+  overflow: hidden;
+  max-height: 1000px;
+  transition: max-height 300ms cubic-bezier(.2, .7, .2, 1);
+}
+.tree-folder:not(.is-open) + .tree-children { max-height: 0; }
+
+.tree-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 12px 3px 32px;
+  color: var(--subtext0);
+  position: relative;
+  transition: color 160ms ease, background 160ms ease;
+}
+.tree-file::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 0; bottom: 0;
+  border-left: 1px dashed var(--border);
+}
+.tree-file:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.02);
+}
+.tree-file.is-active {
+  color: var(--text);
+  background: rgba(180, 190, 254, 0.08);
+  box-shadow: inset 2px 0 0 var(--lavender);
+}
+.tree-file .icon { width: 14px; flex-shrink: 0; }
+.tree-file .ext-md   { color: var(--blue); }
+.tree-file .ext-tsx  { color: var(--sapphire); }
+.tree-file .ext-go   { color: var(--sky); }
+.tree-file .ext-json { color: var(--yellow); }
+.tree-file .ext-png  { color: var(--mauve); }
+.tree-file .ext-yml  { color: var(--peach); }
+
+/* ---------- Main panel --------------------------------------------------- */
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-panel);
+  min-width: 0;
+}
+
+.tabs {
+  display: flex;
+  align-items: stretch;
+  height: 34px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--bg);
+  flex-shrink: 0;
+  overflow-x: auto;
+  position: relative;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+/* Right-edge fade hint that the strip is scrollable */
+.tabs::after {
+  content: '';
+  position: sticky;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  flex-shrink: 0;
+  background: linear-gradient(to right, transparent, var(--bg-elev));
+  pointer-events: none;
+}
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border-right: 1px solid var(--bg);
+  font-size: 12.5px;
+  color: var(--overlay1);
+  position: relative;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 160ms, background 160ms;
+}
+.tab:hover { color: var(--text); }
+.tab.is-active {
+  background: var(--bg-panel);
+  color: var(--text);
+}
+.tab.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--lavender);
+}
+.tab .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--peach);
+}
+.tab.is-active .dot { background: var(--green); }
+.tab .close {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--overlay0);
+  opacity: 0.45;
+  transition: opacity 160ms, background 160ms, color 160ms;
+}
+.tab[data-tab-close-href] .close { opacity: 1; cursor: pointer; }
+.tab[data-tab-close-href] .close:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+/* ---------- Editor ------------------------------------------------------- */
+.editor {
+  flex: 1;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  position: relative;
+  background: var(--bg-panel);
+  min-width: 0;
+  max-width: 100%;
+}
+.editor__inner {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  min-height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.editor__gutter {
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--overlay0);
+  user-select: none;
+  background: var(--bg-panel);
+  position: sticky;
+  top: 0;
+  height: max-content;
+  align-self: start;
+}
+.editor__gutter span {
+  display: block;
+  padding: 0 12px 0 0;
+  opacity: 0.7;
+}
+.editor__gutter span.is-active {
+  color: var(--lavender);
+  opacity: 1;
+}
+.editor__content {
+  padding: 24px 32px 80px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+@media (min-width: 1180px) {
+  .editor__content { max-width: 1100px; }
+}
+
+/* ---------- Status bar --------------------------------------------------- */
+.statusbar {
+  grid-area: status;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 14px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+.statusbar__seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.statusbar__seg .ico { font-family: var(--mono); }
+.statusbar__push { margin-left: auto; }
+
+/* Language toggle — visual state is driven by html[data-lang] selectors */
+.statusbar__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.statusbar__lang:hover { background: rgba(0, 0, 0, 0.12); }
+.statusbar__lang-pill { color: rgba(17, 17, 27, 0.45); transition: color 160ms ease; }
+.statusbar__lang-sep  { color: rgba(17, 17, 27, 0.35); }
+html[data-lang="es"] .statusbar__lang-pill[data-lang-pill="es"],
+html[data-lang="en"] .statusbar__lang-pill[data-lang-pill="en"],
+html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
+  color: var(--bg);
+  font-weight: 700;
+}
+
+/* ---------- Sidebar backdrop (mobile drawer) ---------------------------- */
+.sidebar__backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+.sidebar__backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------- Mobile collapse --------------------------------------------- */
+@media (max-width: 880px) {
+  .ide {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "titlebar"
+      "main"
+      "status";
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+  .titlebar__hamburger { display: inline-flex; }
+
+  /* Sidebar slides in as an overlay drawer */
+  .sidebar {
+    position: fixed;
+    top: 36px;
+    left: 0;
+    bottom: 24px;
+    width: min(280px, 82vw);
+    z-index: 100;
+    transform: translateX(-105%);
+    transition: transform 240ms cubic-bezier(.2, .7, .2, 1);
+    box-shadow: 0 0 0 transparent;
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.6);
+  }
+  .sidebar__backdrop { display: block; }
+
+  body.is-drawer-open { overflow: hidden; }
+
+  .editor__inner { grid-template-columns: 32px 1fr; }
+  .editor__gutter span { padding: 0 6px 0 0; font-size: 11px; }
+  .editor__content { padding: 16px 14px 60px; }
+}

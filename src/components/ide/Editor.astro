@@ -1,0 +1,27 @@
+---
+/**
+ * Editor pane: a fixed-width gutter with line numbers + a content slot.
+ * Line count and highlighted lines are decorative and configurable via props.
+ */
+interface Props {
+  lines?: number;
+  highlightLines?: number[];
+}
+
+const { lines = 220, highlightLines = [1, 12, 48, 99] } = Astro.props;
+const highlight = new Set(highlightLines);
+const numbers = Array.from({ length: lines }, (_, i) => i + 1);
+---
+
+<div class="editor">
+  <div class="editor__inner">
+    <div class="editor__gutter" aria-hidden="true">
+      {numbers.map((n) => (
+        <span class={highlight.has(n) ? 'is-active' : undefined}>{n}</span>
+      ))}
+    </div>
+    <div class="editor__content">
+      <slot />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+---
+/**
+ * Bottom terminal panel. Hidden by default; toggled by [data-terminal-toggle]
+ * elsewhere in the chrome (or with Ctrl+`).
+ *
+ * Project data is baked into a JSON island so the client-side dispatcher
+ * can list / cat projects without re-fetching the collection.
+ */
+import { getCollection } from 'astro:content';
+import { execSync } from 'node:child_process';
+
+const projects = await getCollection('projects');
+const projectData = projects
+  .sort((a, b) => b.data.year - a.data.year)
+  .map((p) => ({
+    slug: p.slug,
+    title: p.data.title,
+    year: p.data.year,
+    status: p.data.status,
+    summary: p.data.summary,
+    stack: p.data.stack,
+  }));
+
+// Bake the recent commit list so `git log` shows the actual portfolio
+// history without a network round-trip. Falls back gracefully on any
+// build environment where git isn't available (e.g. CI tarball deploys).
+let gitLog: string[] = [];
+try {
+  gitLog = execSync('git log --oneline -10', { encoding: 'utf-8' })
+    .trim()
+    .split('\n')
+    .filter(Boolean);
+} catch {
+  gitLog = [];
+}
+---
+
+<script is:inline type="application/json" id="terminal-data" set:html={JSON.stringify({ projects: projectData, gitLog })} />
+
+<aside class="terminal" data-terminal data-state="closed" aria-label="Terminal" hidden>
+  <div class="terminal__head">
+    <div class="terminal__tabs">
+      <span class="terminal__tab">
+        <span class="dot" aria-hidden="true"></span>
+        <span>bash</span>
+      </span>
+    </div>
+    <div class="terminal__actions">
+      <button type="button" data-terminal-action="maximize" aria-label="Maximize terminal" title="Maximize">
+        <span aria-hidden="true">▢</span>
+      </button>
+      <button type="button" data-terminal-action="close" aria-label="Close terminal" title="Close (Esc)">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="terminal__output" data-terminal-output role="log" aria-live="polite"></div>
+
+  <div class="terminal__prompt">
+    <span class="prompt-user">bfmu</span><span class="dim">@</span><span class="prompt-host">portfolio</span><span>:</span><span class="prompt-path">~</span><span class="prompt-arrow">$</span>
+    <input
+      type="text"
+      data-terminal-input
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-label="Terminal input"
+      placeholder="type a command — try: help"
+    />
+  </div>
+</aside>
+
+<script>
+  import { setupTerminal } from '../../scripts/terminal';
+  setupTerminal();
+</script>

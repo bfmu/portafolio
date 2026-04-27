@@ -1,0 +1,105 @@
+---
+/**
+ * File-tree sidebar. Section files derive from the SECTIONS registry;
+ * project files derive from the `projects` content collection — adding a
+ * project .md is enough for it to appear in every page's sidebar.
+ *
+ * Project links resolve via `resolveProjectHref` so case-study projects
+ * point at their static page and demo-only projects point at their demo.
+ */
+import { getCollection } from 'astro:content';
+import { SECTIONS } from '../../lib/ide-sections';
+import { resolveProjectHref, isExternalProjectHref } from '../../lib/project-link';
+import I18n from '../I18n.astro';
+
+const projects = await getCollection('projects');
+const projectFiles = projects
+  .sort((a, b) => b.data.year - a.data.year)
+  .map((p) => ({
+    name: `${p.slug}.md`,
+    href: resolveProjectHref(p),
+    external: isExternalProjectHref(p),
+  }));
+
+const assetFiles = ['me.jpeg', 'flacow.png', 'gifex.png', 'retos.png'];
+
+const totalCount = SECTIONS.length + projectFiles.length + assetFiles.length;
+---
+
+<aside class="sidebar" aria-label="Explorer">
+  <div class="sidebar__rail">
+    <div class="sidebar__rail-item">
+      <span><I18n key="sidebar.explorer" /></span>
+      <span class="count">{totalCount}</span>
+    </div>
+  </div>
+
+  <nav class="sidebar__tree">
+    <div class="tree-folder is-open" data-folder>
+      <span class="chev">▸</span>
+      <span class="icon">▾</span>
+      <span>portfolio</span>
+    </div>
+
+    <div class="tree-children">
+      {SECTIONS.map((section, i) => (
+        <a
+          class:list={['tree-file', i === 0 && 'is-active']}
+          href={`/#${section.id}`}
+          data-tree-key={section.treeKey}
+        >
+          <span class={`icon ext-${section.iconKind}`}>{section.iconGlyph}</span>
+          <span>{section.file}</span>
+        </a>
+      ))}
+
+      <div class="tree-folder is-open" data-folder>
+        <span class="chev">▸</span>
+        <span class="icon">▾</span>
+        <span>projects/</span>
+      </div>
+      <div class="tree-children">
+        {projectFiles.map((file) => (
+          <a
+            class="tree-file"
+            href={file.href}
+            target={file.external ? '_blank' : undefined}
+            rel={file.external ? 'noopener' : undefined}
+          >
+            <span class="icon ext-md">M↓</span>
+            <span>{file.name}</span>
+            {file.external && <span class="dim" style="margin-left: auto; font-size: 10px">↗</span>}
+          </a>
+        ))}
+      </div>
+
+      <div class="tree-folder" data-folder>
+        <span class="chev">▸</span>
+        <span class="icon">▸</span>
+        <span>assets/</span>
+      </div>
+      <div class="tree-children" style="max-height:0">
+        {assetFiles.map((name) => (
+          <a class="tree-file" href="#">
+            <span class="icon ext-png">▣</span>
+            <span>{name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
+</aside>
+
+<script>
+  import { setupSidebarFolders } from '../../scripts/sidebar-folders';
+  import type { Section } from '../../lib/ide-sections';
+
+  setupSidebarFolders();
+
+  document.addEventListener('section:change', (event) => {
+    const detail = (event as CustomEvent<Section>).detail;
+    document.querySelectorAll<HTMLElement>('.tree-file[data-tree-key]').forEach((el) => {
+      el.classList.toggle('is-active', el.dataset.treeKey === detail.treeKey);
+    });
+  });
+</script>

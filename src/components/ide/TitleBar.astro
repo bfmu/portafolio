@@ -1,0 +1,52 @@
+---
+/**
+ * Window chrome at the top of the IDE shell. Renders macOS-style
+ * traffic-light dots, a mobile-only hamburger toggle for the sidebar
+ * drawer, and a breadcrumb path. The default breadcrumb points at the
+ * portfolio root; sub-pages (project case studies) pass their own.
+ */
+import type { Crumb } from './types';
+
+interface Props {
+  breadcrumb?: Crumb[];
+  branch?: string;
+}
+
+const defaultBreadcrumb: Crumb[] = [
+  { label: '~' },
+  { label: 'bfmu' },
+  { label: 'portfolio', isActive: true },
+];
+
+const { breadcrumb = defaultBreadcrumb, branch = 'main' } = Astro.props;
+---
+
+<header class="titlebar">
+  <div class="titlebar__lights" aria-hidden="true">
+    <span class="titlebar__light titlebar__light--r"></span>
+    <span class="titlebar__light titlebar__light--y"></span>
+    <span class="titlebar__light titlebar__light--g"></span>
+  </div>
+
+  <button
+    type="button"
+    class="titlebar__hamburger"
+    data-sidebar-toggle
+    aria-label="Toggle file explorer"
+    title="Toggle file explorer"
+  >
+    <span aria-hidden="true">☰</span>
+  </button>
+
+  <div class="titlebar__path" aria-label="path">
+    {breadcrumb.map((crumb, i) => (
+      <>
+        {i > 0 && <span class="titlebar__path-sep">/</span>}
+        <span class:list={['path-segment', crumb.isActive && 'is-active']}>
+          {crumb.label}
+        </span>
+      </>
+    ))}
+    <span class="titlebar__path-branch">— {branch}</span>
+  </div>
+</header>
