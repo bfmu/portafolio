@@ -23,4 +23,4 @@ RUN npm install -g serve@14
 COPY --from=build /app/dist ./dist
 
 EXPOSE 4321
-CMD ["serve", "-s", "dist", "-l", "4321"]
+CMD ["serve", "dist", "-l", "4321"]

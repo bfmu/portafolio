@@ -1,12 +1,10 @@
 services:
   frontend:
-    image: reg.redflox.com/portfolio:${TAG}
+    build: .
     container_name: portfolio
     restart: unless-stopped
     expose:
       - 4321
-    #ports:
-    #  - "81:4321"
     networks:
       - proxy
 networks:
