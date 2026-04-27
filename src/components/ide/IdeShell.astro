@@ -23,6 +23,7 @@ const { breadcrumb, openFiles } = Astro.props;
 <div class="ide" role="application" aria-label="bfmu portfolio IDE">
   <TitleBar breadcrumb={breadcrumb} />
   <Sidebar />
+  <div class="sidebar__backdrop" aria-hidden="true"></div>
   <main class="main">
     <Tabs files={openFiles} />
     <Editor>
@@ -37,7 +38,9 @@ const { breadcrumb, openFiles } = Astro.props;
   import { setupActiveSection } from '../../scripts/active-section';
   import { setupCustomCursor } from '../../scripts/cursor';
   import { setupReveal } from '../../scripts/reveal';
+  import { setupSidebarDrawer } from '../../scripts/sidebar-drawer';
   setupActiveSection();
   setupCustomCursor();
   setupReveal();
+  setupSidebarDrawer();
 </script>

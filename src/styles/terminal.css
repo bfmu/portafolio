@@ -121,3 +121,19 @@
   padding: 0 6px;
 }
 .statusbar__terminal-btn:hover { background: rgba(0, 0, 0, 0.12); }
+
+/* ---------- Mobile: full-screen overlay --------------------------------- */
+@media (max-width: 720px) {
+  .terminal {
+    position: fixed;
+    inset: 0;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    z-index: 150;
+    border-top: 0;
+  }
+  .terminal[data-state="max"] {
+    height: 100dvh !important;
+  }
+  .terminal__head { height: 40px; }
+}

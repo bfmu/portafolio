@@ -62,6 +62,21 @@
 .titlebar__path-sep { color: var(--overlay0); }
 .titlebar__path-branch { color: var(--overlay0); margin-left: 8px; }
 
+.titlebar__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: 6px;
+  border-radius: 4px;
+  color: var(--subtext0);
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 160ms, color 160ms;
+}
+.titlebar__hamburger:hover { background: var(--bg-panel); color: var(--text); }
+
 /* ---------- Sidebar ------------------------------------------------------ */
 .sidebar {
   grid-area: sidebar;
@@ -170,6 +185,21 @@
   border-bottom: 1px solid var(--bg);
   flex-shrink: 0;
   overflow-x: auto;
+  position: relative;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+/* Right-edge fade hint that the strip is scrollable */
+.tabs::after {
+  content: '';
+  position: sticky;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  flex-shrink: 0;
+  background: linear-gradient(to right, transparent, var(--bg-elev));
+  pointer-events: none;
 }
 .tab {
   display: inline-flex;
@@ -312,6 +342,23 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   font-weight: 800;
 }
 
+/* ---------- Sidebar backdrop (mobile drawer) ---------------------------- */
+.sidebar__backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+.sidebar__backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* ---------- Mobile collapse --------------------------------------------- */
 @media (max-width: 880px) {
   .ide {
@@ -320,10 +367,32 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
       "titlebar"
       "main"
       "status";
-    height: auto;
+    height: 100vh;
     min-height: 100vh;
   }
-  .sidebar { display: none; }
+
+  .titlebar__hamburger { display: inline-flex; }
+
+  /* Sidebar slides in as an overlay drawer */
+  .sidebar {
+    position: fixed;
+    top: 36px;
+    left: 0;
+    bottom: 24px;
+    width: min(280px, 82vw);
+    z-index: 100;
+    transform: translateX(-105%);
+    transition: transform 240ms cubic-bezier(.2, .7, .2, 1);
+    box-shadow: 0 0 0 transparent;
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.6);
+  }
+  .sidebar__backdrop { display: block; }
+
+  body.is-drawer-open { overflow: hidden; }
+
   .editor__inner { grid-template-columns: 32px 1fr; }
   .editor__gutter span { padding: 0 6px 0 0; font-size: 11px; }
   .editor__content { padding: 16px 14px 60px; }

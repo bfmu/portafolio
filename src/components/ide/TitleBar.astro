@@ -1,8 +1,9 @@
 ---
 /**
  * Window chrome at the top of the IDE shell. Renders macOS-style
- * traffic-light dots and a breadcrumb path. The default breadcrumb points
- * at the portfolio root; sub-pages (project case studies) pass their own.
+ * traffic-light dots, a mobile-only hamburger toggle for the sidebar
+ * drawer, and a breadcrumb path. The default breadcrumb points at the
+ * portfolio root; sub-pages (project case studies) pass their own.
  */
 import type { Crumb } from './types';
 
@@ -26,6 +27,16 @@ const { breadcrumb = defaultBreadcrumb, branch = 'main' } = Astro.props;
     <span class="titlebar__light titlebar__light--y"></span>
     <span class="titlebar__light titlebar__light--g"></span>
   </div>
+
+  <button
+    type="button"
+    class="titlebar__hamburger"
+    data-sidebar-toggle
+    aria-label="Toggle file explorer"
+    title="Toggle file explorer"
+  >
+    <span aria-hidden="true">☰</span>
+  </button>
 
   <div class="titlebar__path" aria-label="path">
     {breadcrumb.map((crumb, i) => (
