@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Bilingual from '../Bilingual.astro';
 import I18n from '../I18n.astro';
+import { resolveProjectHref, isExternalProjectHref } from '../../lib/project-link';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -11,6 +12,9 @@ interface Props {
 const { project } = Astro.props;
 const { data, slug } = project;
 
+const href = resolveProjectHref(project);
+const external = isExternalProjectHref(project);
+
 const hostname = data.demo
   ? new URL(data.demo).host
   : data.repo
@@ -18,7 +22,14 @@ const hostname = data.demo
   : `${slug}.bfmu.dev`;
 ---
 
-<a class="proj-card reveal" data-reveal data-cursor="grab" href={`/projects/${slug}`}>
+<a
+  class="proj-card reveal"
+  data-reveal
+  data-cursor="grab"
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
   <div class="proj-card__chrome">
     <span class="light l1" aria-hidden="true"></span>
     <span class="light l2" aria-hidden="true"></span>
@@ -47,8 +58,12 @@ const hostname = data.demo
       {data.stack.slice(0, 3).map((tech) => <span class="chip">{tech}</span>)}
     </div>
     <div class="proj-card__cta">
-      <I18n key="proj.read" />
-      <span>→</span>
+      {data.caseStudy ? (
+        <I18n key="proj.read" />
+      ) : (
+        <Bilingual es={data.demo ? 'Ver demo' : 'Ver repositorio'} en={data.demo ? 'View demo' : 'View repo'} />
+      )}
+      <span>{external ? '↗' : '→'}</span>
     </div>
   </div>
 </a>

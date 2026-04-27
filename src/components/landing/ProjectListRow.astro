@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Bilingual from '../Bilingual.astro';
 import I18n from '../I18n.astro';
+import { resolveProjectHref, isExternalProjectHref } from '../../lib/project-link';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -11,9 +12,17 @@ interface Props {
 
 const { project, size = '4.0K' } = Astro.props;
 const { data, slug } = project;
+
+const href = resolveProjectHref(project);
+const external = isExternalProjectHref(project);
 ---
 
-<a class="ls-row" href={`/projects/${slug}`}>
+<a
+  class="ls-row"
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+>
   <span class="perms">
     drwx<span class="r">r</span><span class="x">-x</span><span class="r">r</span><span class="x">-x</span>
   </span>
@@ -27,7 +36,7 @@ const { data, slug } = project;
     </span>
   </span>
   <span class="open">
-    <I18n key="proj.open" />
-    <span class="arrow">→</span>
+    {data.caseStudy ? <I18n key="proj.open" /> : <Bilingual es="visitar" en="visit" />}
+    <span class="arrow">{external ? '↗' : '→'}</span>
   </span>
 </a>

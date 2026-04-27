@@ -3,9 +3,13 @@
  * File-tree sidebar. Section files derive from the SECTIONS registry;
  * project files derive from the `projects` content collection — adding a
  * project .md is enough for it to appear in every page's sidebar.
+ *
+ * Project links resolve via `resolveProjectHref` so case-study projects
+ * point at their static page and demo-only projects point at their demo.
  */
 import { getCollection } from 'astro:content';
 import { SECTIONS } from '../../lib/ide-sections';
+import { resolveProjectHref, isExternalProjectHref } from '../../lib/project-link';
 import I18n from '../I18n.astro';
 
 const projects = await getCollection('projects');
@@ -13,7 +17,8 @@ const projectFiles = projects
   .sort((a, b) => b.data.year - a.data.year)
   .map((p) => ({
     name: `${p.slug}.md`,
-    href: `/projects/${p.slug}`,
+    href: resolveProjectHref(p),
+    external: isExternalProjectHref(p),
   }));
 
 const assetFiles = ['me.jpeg', 'flacow.png', 'gifex.png', 'retos.png'];
@@ -55,9 +60,15 @@ const totalCount = SECTIONS.length + projectFiles.length + assetFiles.length;
       </div>
       <div class="tree-children">
         {projectFiles.map((file) => (
-          <a class="tree-file" href={file.href}>
+          <a
+            class="tree-file"
+            href={file.href}
+            target={file.external ? '_blank' : undefined}
+            rel={file.external ? 'noopener' : undefined}
+          >
             <span class="icon ext-md">M↓</span>
             <span>{file.name}</span>
+            {file.external && <span class="dim" style="margin-left: auto; font-size: 10px">↗</span>}
           </a>
         ))}
       </div>

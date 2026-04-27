@@ -15,10 +15,12 @@ import type { Crumb, OpenFile } from '../../components/ide/types';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+  return projects
+    .filter((project) => project.data.caseStudy)
+    .map((project) => ({
+      params: { slug: project.slug },
+      props: { project },
+    }));
 }
 
 interface Props {

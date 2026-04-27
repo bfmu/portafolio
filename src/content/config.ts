@@ -23,6 +23,13 @@ const projects = defineCollection({
       demo: z.string().url().optional(),
       cover: image(),
 
+      /**
+       * Whether this project gets a dedicated `/projects/<slug>` page.
+       * When false, the project still appears as a card on the landing
+       * but cards/list/sidebar link straight to its demo or repo.
+       */
+      caseStudy: z.boolean().default(true),
+
       summary: bilingual,
 
       sections: z.object({
