@@ -2,6 +2,7 @@ services:
   frontend:
     image: reg.redflox.com/portfolio:${TAG}
     container_name: portfolio
+    restart: unless-stopped
     expose:
       - 4321
     #ports:
