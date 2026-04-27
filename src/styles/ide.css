@@ -339,7 +339,7 @@ html[data-lang="es"] .statusbar__lang-pill[data-lang-pill="es"],
 html[data-lang="en"] .statusbar__lang-pill[data-lang-pill="en"],
 html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   color: var(--bg);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 /* ---------- Sidebar backdrop (mobile drawer) ---------------------------- */
