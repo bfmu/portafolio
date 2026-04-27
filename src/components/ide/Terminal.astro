@@ -21,7 +21,7 @@ const projectData = projects
   }));
 ---
 
-<script type="application/json" id="terminal-data" set:html={JSON.stringify({ projects: projectData })} />
+<script is:inline type="application/json" id="terminal-data" set:html={JSON.stringify({ projects: projectData })} />
 
 <aside class="terminal" data-terminal data-state="closed" aria-label="Terminal" hidden>
   <div class="terminal__head">
