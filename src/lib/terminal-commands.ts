@@ -411,6 +411,19 @@ for (const cmd of COMMANDS) {
   cmd.aliases?.forEach((a) => aliasIndex.set(a, cmd));
 }
 
+/**
+ * Names + aliases that start with the given prefix, sorted alphabetically.
+ * Used by the terminal's Tab-completion to suggest commands.
+ */
+export function completionCandidates(prefix: string): string[] {
+  if (!prefix) return [];
+  const out: string[] = [];
+  for (const key of aliasIndex.keys()) {
+    if (key.startsWith(prefix)) out.push(key);
+  }
+  return out.sort();
+}
+
 /** Look up + run a command. Echoes a hint when the command is unknown. */
 export function dispatchCommand(line: string, ctx: TerminalContext): void {
   const trimmed = line.trim();

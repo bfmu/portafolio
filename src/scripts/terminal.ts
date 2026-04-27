@@ -1,5 +1,6 @@
 import {
   COMMANDS,
+  completionCandidates,
   dispatchCommand,
   escapeHtml,
   type TerminalData,
@@ -76,11 +77,56 @@ export function setupTerminal(): void {
   const history: string[] = [];
   let historyIdx = -1;
 
+  // Tab-completion state. Persists across consecutive Tab presses so the
+  // first press lists matches and subsequent presses cycle through them.
+  let tabCycle: { prefix: string; matches: string[]; index: number } | null = null;
+
   const echoCommand = (line: string) => {
     print(`<span class="prompt-arrow">$</span> <span class="var">${escapeHtml(line)}</span>`);
   };
 
+  const handleTab = () => {
+    const words = input.value.split(/\s+/);
+    // Only complete the command (first word). Argument completion would
+    // need per-command logic — out of scope for this iteration.
+    if (words.length > 1) return;
+    const prefix = words[0];
+    if (!prefix) return;
+
+    const isFresh = !tabCycle || tabCycle.prefix !== prefix;
+    if (isFresh) {
+      const matches = completionCandidates(prefix);
+      if (matches.length === 0) {
+        tabCycle = null;
+        return;
+      }
+      if (matches.length === 1) {
+        input.value = `${matches[0]} `;
+        tabCycle = null;
+        return;
+      }
+      print(
+        `<span class="dim">${matches.map((m) => `<span class="kw">${m}</span>`).join('  ')}</span>`
+      );
+      tabCycle = { prefix, matches, index: -1 };
+      return;
+    }
+
+    // Cycling through previously listed matches.
+    tabCycle.index = (tabCycle.index + 1) % tabCycle.matches.length;
+    input.value = tabCycle.matches[tabCycle.index];
+  };
+
   input.addEventListener('keydown', (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      handleTab();
+      return;
+    }
+    // Any other key invalidates the tab-cycle session — typing changes
+    // the prefix anyway, and the next Tab should re-evaluate.
+    tabCycle = null;
+
     if (event.key === 'Enter') {
       event.preventDefault();
       const value = input.value;
