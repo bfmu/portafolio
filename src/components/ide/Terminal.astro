@@ -7,6 +7,7 @@
  * can list / cat projects without re-fetching the collection.
  */
 import { getCollection } from 'astro:content';
+import { execSync } from 'node:child_process';
 
 const projects = await getCollection('projects');
 const projectData = projects
@@ -19,9 +20,22 @@ const projectData = projects
     summary: p.data.summary,
     stack: p.data.stack,
   }));
+
+// Bake the recent commit list so `git log` shows the actual portfolio
+// history without a network round-trip. Falls back gracefully on any
+// build environment where git isn't available (e.g. CI tarball deploys).
+let gitLog: string[] = [];
+try {
+  gitLog = execSync('git log --oneline -10', { encoding: 'utf-8' })
+    .trim()
+    .split('\n')
+    .filter(Boolean);
+} catch {
+  gitLog = [];
+}
 ---
 
-<script is:inline type="application/json" id="terminal-data" set:html={JSON.stringify({ projects: projectData })} />
+<script is:inline type="application/json" id="terminal-data" set:html={JSON.stringify({ projects: projectData, gitLog })} />
 
 <aside class="terminal" data-terminal data-state="closed" aria-label="Terminal" hidden>
   <div class="terminal__head">

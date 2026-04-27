@@ -2,7 +2,7 @@ import {
   COMMANDS,
   dispatchCommand,
   escapeHtml,
-  type ProjectInfo,
+  type TerminalData,
   type TerminalContext,
 } from '../lib/terminal-commands';
 
@@ -10,17 +10,18 @@ const HISTORY_LIMIT = 50;
 
 type State = 'closed' | 'open' | 'max';
 
-interface BakedData {
-  projects: ProjectInfo[];
-}
-
-function readBakedData(): BakedData {
+function readBakedData(): TerminalData {
   const el = document.getElementById('terminal-data');
-  if (!el || !el.textContent) return { projects: [] };
+  const fallback: TerminalData = { projects: [], gitLog: [] };
+  if (!el || !el.textContent) return fallback;
   try {
-    return JSON.parse(el.textContent) as BakedData;
+    const parsed = JSON.parse(el.textContent) as Partial<TerminalData>;
+    return {
+      projects: parsed.projects ?? [],
+      gitLog: parsed.gitLog ?? [],
+    };
   } catch {
-    return { projects: [] };
+    return fallback;
   }
 }
 

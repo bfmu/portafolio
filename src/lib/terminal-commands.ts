@@ -22,17 +22,24 @@ export interface ProjectInfo {
   stack: string[];
 }
 
+export interface TerminalData {
+  projects: ProjectInfo[];
+  gitLog: string[];
+}
+
 export interface TerminalContext {
   print: (lines: string | string[]) => void;
   clear: () => void;
   close: () => void;
-  data: { projects: ProjectInfo[] };
+  data: TerminalData;
 }
 
 export interface Command {
   name: string;
   description: string;
   aliases?: string[];
+  /** When true, the command is hidden from `help` output. */
+  hidden?: boolean;
   run: (args: string[], ctx: TerminalContext) => void;
 }
 
@@ -48,19 +55,34 @@ const escapeHtml = (s: string): string =>
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   }[c] ?? c));
 
+const JOKES = [
+  "Why do programmers prefer dark mode? Because light attracts bugs.",
+  "There are 10 types of people in the world: those who understand binary, and those who don't.",
+  "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+  "How many programmers does it take to change a light bulb? None — that's a hardware problem.",
+  "I would tell you a UDP joke, but you might not get it.",
+  "There are two hard problems in CS: cache invalidation, naming things, and off-by-one errors.",
+  "git push --force is the answer to many things you should not be doing.",
+  "Why don't bachelors like Git? Because they're afraid to commit.",
+  "Real programmers count from 0.",
+  "It's not a bug, it's an undocumented feature.",
+];
+
 export const COMMANDS: Command[] = [
   {
     name: 'help',
     description: 'list available commands',
     aliases: ['?'],
     run(_args, ctx) {
-      const rows = COMMANDS.map((c) => {
+      const visible = COMMANDS.filter((c) => !c.hidden);
+      const rows = visible.map((c) => {
         const padded = c.name.padEnd(12);
         return `  <span class="kw">${padded}</span><span class="dim">${c.description}</span>`;
       });
       ctx.print([
         '<span class="dim">commands available — args go after a space</span>',
         ...rows,
+        '<span class="dim">(curiosity tip: try</span> <span class="kw">joke</span><span class="dim">,</span> <span class="kw">coffee</span><span class="dim">,</span> <span class="kw">git log</span><span class="dim">)</span>',
       ]);
     },
   },
@@ -203,6 +225,16 @@ export const COMMANDS: Command[] = [
     },
   },
   {
+    name: 'theme',
+    description: 'show / change theme',
+    run(_args, ctx) {
+      ctx.print([
+        '<span class="dim">current:</span>   <span class="kw">catppuccin-mocha</span>',
+        '<span class="dim">available:</span> <span class="kw">catppuccin-mocha</span> <span class="dim">(only flavor for now)</span>',
+      ]);
+    },
+  },
+  {
     name: 'clear',
     aliases: ['cls'],
     description: 'clear the terminal',
@@ -212,10 +244,163 @@ export const COMMANDS: Command[] = [
   },
   {
     name: 'exit',
-    aliases: ['close', 'q'],
+    aliases: ['close', 'q', 'quit'],
     description: 'close the terminal',
     run(_args, ctx) {
       ctx.close();
+    },
+  },
+
+  // ---------- easter eggs ----------
+
+  {
+    name: 'git',
+    description: 'try: git log · git status · git blame',
+    run(args, ctx) {
+      const sub = args[0];
+      if (sub === 'log') {
+        const log = ctx.data.gitLog ?? [];
+        if (log.length === 0) {
+          ctx.print('<span class="dim">no history</span>');
+          return;
+        }
+        const lines = log.map((line) => {
+          const [hash, ...rest] = line.split(' ');
+          return `<span class="num">${escapeHtml(hash)}</span> <span class="dim">${escapeHtml(rest.join(' '))}</span>`;
+        });
+        ctx.print(['<span class="dim">$ git log --oneline -10</span>', ...lines]);
+        return;
+      }
+      if (sub === 'status') {
+        ctx.print([
+          '<span class="dim">on branch</span> <span class="kw">redesign/v2-ide</span>',
+          '<span class="ok">nothing to commit, working tree clean</span>',
+        ]);
+        return;
+      }
+      if (sub === 'blame') {
+        ctx.print('<span class="dim">100% —</span> <span class="num">Bryan Muñoz</span>');
+        return;
+      }
+      if (sub === 'push' || sub === 'pull' || sub === 'commit') {
+        ctx.print(`<span class="tag">git ${escapeHtml(sub)}:</span> read-only terminal — try the real one`);
+        return;
+      }
+      ctx.print([
+        `<span class="dim">git: '${escapeHtml(sub ?? '')}' is not a portfolio command.</span>`,
+        '<span class="dim">try:</span> <span class="kw">git log</span> <span class="dim">·</span> <span class="kw">git status</span> <span class="dim">·</span> <span class="kw">git blame</span>',
+      ]);
+    },
+  },
+  {
+    name: 'sudo',
+    description: 'try to elevate (spoiler: nope)',
+    run(_args, ctx) {
+      ctx.print([
+        '<span class="tag">sudo:</span> permission denied',
+        '<span class="dim">try with</span> <span class="kw">please</span> <span class="dim">😉</span>',
+      ]);
+    },
+  },
+  {
+    name: 'please',
+    description: 'magic word — runs the rest with politeness',
+    run(args, ctx) {
+      if (args.length === 0) {
+        ctx.print('<span class="dim">usage:</span> please &lt;command&gt;');
+        return;
+      }
+      const head = args[0];
+      if (head === 'sudo' || head === 'please') {
+        ctx.print('<span class="dim">manners noted; redundancy too.</span>');
+        return;
+      }
+      ctx.print('<span class="ok">since you asked nicely…</span>');
+      dispatchCommand(args.join(' '), ctx);
+    },
+  },
+  {
+    name: 'rm',
+    description: 'delete things — careful',
+    hidden: true,
+    run(args, ctx) {
+      const target = args.join(' ');
+      if (target.includes('-rf') && (target.includes('/') || target.includes('~') || target.includes('*'))) {
+        ctx.print([
+          '<span class="tag">nice try.</span> this terminal is read-only.',
+          '<span class="dim">if you need to clean up, just close the tab.</span>',
+        ]);
+        return;
+      }
+      ctx.print(`<span class="dim">file not found:</span> ${escapeHtml(target || '<empty>')}`);
+    },
+  },
+  {
+    name: 'vim',
+    aliases: ['nano', 'emacs', 'vi', 'code'],
+    description: 'open an editor (kind of)',
+    hidden: true,
+    run(_args, ctx) {
+      ctx.print(
+        '<span class="dim">no editor here. try</span> <span class="kw">cat &lt;slug&gt;</span> <span class="dim">to inspect a project.</span>'
+      );
+    },
+  },
+  {
+    name: 'npm',
+    aliases: ['pnpm', 'yarn', 'bun'],
+    description: 'package manager',
+    hidden: true,
+    run(args, ctx) {
+      const sub = args[0];
+      if ((sub === 'run' && args[1] === 'dev') || sub === 'dev' || sub === 'start') {
+        ctx.print('<span class="ok">✓</span> dev server is already running — you\'re looking at it.');
+        return;
+      }
+      if (sub === 'install' || sub === 'i') {
+        ctx.print('<span class="dim">already installed.</span>');
+        return;
+      }
+      if (sub === 'audit') {
+        ctx.print('<span class="ok">found 0 vulnerabilities</span> <span class="dim">(it\'s a static site)</span>');
+        return;
+      }
+      ctx.print([
+        '<span class="dim">no package manager available here.</span>',
+        '<span class="dim">this site is static — built with</span> <span class="kw">astro</span> <span class="dim">+</span> <span class="kw">pnpm</span><span class="dim">.</span>',
+      ]);
+    },
+  },
+  {
+    name: 'coffee',
+    aliases: ['cafecito', 'cafe', '☕'],
+    description: 'fuel up',
+    run(_args, ctx) {
+      ctx.print([
+        '       <span class="dim">) )</span>',
+        '      <span class="dim">( (</span>',
+        '   <span class="num">┌────────┐</span>',
+        '   <span class="num">│  </span><span class="acc">☕</span><span class="num">     │</span>',
+        '   <span class="num">└────────┘</span>',
+        '       <span class="dim">▔▔▔▔▔▔</span>',
+        '<span class="dim">made with ♥ in Bogotá</span>',
+      ]);
+    },
+  },
+  {
+    name: 'joke',
+    description: 'random programmer joke',
+    run(_args, ctx) {
+      const i = Math.floor(Math.random() * JOKES.length);
+      ctx.print(`<span class="dim">${JOKES[i]}</span>`);
+    },
+  },
+  {
+    name: 'echo',
+    description: 'echo back what you say',
+    hidden: true,
+    run(args, ctx) {
+      ctx.print(escapeHtml(args.join(' ')));
     },
   },
 ];
