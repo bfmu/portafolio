@@ -390,7 +390,15 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
     left: 0;
     right: 0;
     z-index: 80;
+    gap: 12px;
+    overflow: hidden;
   }
+
+  /* Hide decorative segments — keep branch + lang toggle only */
+  .statusbar__hide-mobile { display: none !important; }
+
+  /* Push lang toggle to the right */
+  .statusbar__lang--push { margin-left: auto; }
 
   /* Compensate for fixed titlebar/statusbar so content isn't hidden under them */
   .main {

@@ -15,12 +15,12 @@ const initial = SECTIONS[0];
 
 <footer class="statusbar">
   <span class="statusbar__seg"><span class="ico">⌥</span> main</span>
-  <span class="statusbar__seg">↓ 0 ↑ 0</span>
-  <span class="statusbar__seg">⚠ 0 ✕ 0</span>
-  <span class="statusbar__seg statusbar__push" data-status-file>{initial.file}</span>
+  <span class="statusbar__seg statusbar__hide-mobile">↓ 0 ↑ 0</span>
+  <span class="statusbar__seg statusbar__hide-mobile">⚠ 0 ✕ 0</span>
+  <span class="statusbar__seg statusbar__push statusbar__hide-mobile" data-status-file>{initial.file}</span>
   <button
     type="button"
-    class="statusbar__seg statusbar__terminal-btn"
+    class="statusbar__seg statusbar__terminal-btn statusbar__hide-mobile"
     data-terminal-toggle
     aria-label="Toggle terminal"
     title="Ctrl+`"
@@ -28,14 +28,14 @@ const initial = SECTIONS[0];
     <span aria-hidden="true">▣</span>
     <I18n key="status.terminal" />
   </button>
-  <span class="statusbar__seg">Ln 1, Col 1</span>
-  <span class="statusbar__seg">UTF-8</span>
-  <span class="statusbar__seg">LF</span>
-  <span class="statusbar__seg" data-status-language>{initial.language}</span>
+  <span class="statusbar__seg statusbar__hide-mobile">Ln 1, Col 1</span>
+  <span class="statusbar__seg statusbar__hide-mobile">UTF-8</span>
+  <span class="statusbar__seg statusbar__hide-mobile">LF</span>
+  <span class="statusbar__seg statusbar__hide-mobile" data-status-language>{initial.language}</span>
 
   <button
     type="button"
-    class="statusbar__lang"
+    class="statusbar__lang statusbar__lang--push"
     data-lang-toggle
     aria-label="Toggle language"
   >
@@ -45,7 +45,7 @@ const initial = SECTIONS[0];
     <span class="statusbar__lang-pill" data-lang-pill="en">EN</span>
   </button>
 
-  <span class="statusbar__seg" data-status-clock>--:--</span>
+  <span class="statusbar__seg statusbar__hide-mobile" data-status-clock>--:--</span>
 </footer>
 
 <script>

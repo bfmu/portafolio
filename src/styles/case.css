@@ -203,6 +203,27 @@
   /* Fixed titlebar is 36px on mobile; anchor links must clear it */
   .md h2 { scroll-margin-top: 56px; }
 }
+
+/* ---------- Mobile (≤640px) --------------------------------------------- */
+@media (max-width: 640px) {
+  .case-hero__title {
+    font-size: clamp(28px, 9vw, 40px);
+  }
+
+  /* Demo buttons fill the row */
+  .demo-card { flex-direction: column; gap: 10px; }
+  .demo-btn  { width: 100%; justify-content: center; }
+
+  /* Reduce excessive top margin on section headers */
+  .md h2 { margin-top: 36px; font-size: 19px; }
+  .md h3 { margin-top: 20px; }
+
+  /* Back link full-width on small screens */
+  .readme-back { display: flex; justify-content: center; }
+
+  /* Code block: smaller font so the git clone URL doesn't force horizontal scroll */
+  .code-block pre, .code-block pre code { font-size: 11.5px; }
+}
 .md h2 .hash { color: var(--overlay0); }
 .md h3 {
   font-family: var(--mono);
