@@ -361,14 +361,48 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
 
 /* ---------- Mobile collapse --------------------------------------------- */
 @media (max-width: 880px) {
+  /* Let the page scroll naturally — the locked-height / overflow:hidden IDE
+     model breaks touch scroll on iOS. The titlebar and statusbar become
+     position:fixed so they stay visible while the document scrolls. */
   .ide {
     grid-template-columns: 1fr;
+    grid-template-rows: 36px 1fr 24px;
     grid-template-areas:
       "titlebar"
       "main"
       "status";
-    height: 100vh;
-    min-height: 100vh;
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+  }
+
+  .statusbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+  }
+
+  /* Compensate for fixed titlebar/statusbar so content isn't hidden under them */
+  .main {
+    overflow: visible;
+    padding-top: 36px;
+    padding-bottom: 24px;
+  }
+
+  .editor {
+    overflow: visible !important;
+    height: auto !important;
+    flex: none;
   }
 
   .titlebar__hamburger { display: inline-flex; }
@@ -394,6 +428,10 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   body.is-drawer-open { overflow: hidden; }
 
   .editor__inner { grid-template-columns: 32px 1fr; }
+  .editor__gutter {
+    position: sticky;
+    top: 36px; /* stay below fixed titlebar */
+  }
   .editor__gutter span { padding: 0 6px 0 0; font-size: 11px; }
   .editor__content { padding: 16px 14px 60px; }
 }
