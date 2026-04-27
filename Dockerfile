@@ -1,23 +1,26 @@
-FROM node:lts AS base
+# syntax=docker/dockerfile:1
+# ----- build stage -----
+FROM node:lts-alpine AS build
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# pnpm via corepack — lockfile is pnpm-lock.yaml, not package-lock.json.
+RUN corepack enable
 
-FROM base AS prod-deps
-RUN npm install --production
+# Cache deps independently of source code.
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-FROM base AS build-deps
-RUN npm install --production=false
-
-FROM build-deps AS build
 COPY . .
+RUN pnpm build
 
-RUN npm run build
+# ----- runtime stage -----
+# Static site → all we need is `serve` pointing at /app/dist.
+FROM node:lts-alpine AS runtime
+WORKDIR /app
 
-FROM base AS runtime
-COPY --from=prod-deps /app/node_modules ./node_modules
+RUN npm install -g serve@14
+
 COPY --from=build /app/dist ./dist
 
 EXPOSE 4321
-RUN npm i -g serve
-CMD serve -s /app/dist -l 4321
+CMD ["serve", "-s", "dist", "-l", "4321"]
