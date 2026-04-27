@@ -199,6 +199,10 @@
   letter-spacing: -0.01em;
   scroll-margin-top: 80px;
 }
+@media (max-width: 880px) {
+  /* Fixed titlebar is 36px on mobile; anchor links must clear it */
+  .md h2 { scroll-margin-top: 56px; }
+}
 .md h2 .hash { color: var(--overlay0); }
 .md h3 {
   font-family: var(--mono);

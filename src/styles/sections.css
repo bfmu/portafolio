@@ -466,6 +466,31 @@
   .contact-grid { grid-template-columns: 1fr; }
 }
 
+/* ---------- Mobile (≤640px) --------------------------------------------- */
+@media (max-width: 640px) {
+  /* Section heading: hide the decorative $ command on the right */
+  .section__heading .meta { display: none; }
+
+  /* Project cards: fit within the viewport width */
+  .proj-card { flex: 0 0 min(360px, 85vw); }
+
+  /* Project scroller hint: drop keyboard shortcut keys, touch doesn't need them */
+  .proj-scroller__hint .key,
+  .proj-scroller__hint .dim { display: none; }
+
+  /* ls -la list: hide PERMS and SIZE — keep YEAR, NAME, OPEN */
+  .ls-header,
+  .ls-row { grid-template-columns: 52px 1fr auto; gap: 10px; }
+  .ls-header .col:nth-child(1),
+  .ls-header .col:nth-child(2),
+  .ls-row .perms,
+  .ls-row .size { display: none; }
+
+  /* Experience: slightly less padding for the timeline indent */
+  .timeline { padding-left: 20px; }
+  .exp { padding: 14px 0 18px; }
+}
+
 .contact-card {
   display: flex;
   align-items: center;
