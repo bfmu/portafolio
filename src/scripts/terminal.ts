@@ -93,8 +93,7 @@ export function setupTerminal(): void {
     const prefix = words[0];
     if (!prefix) return;
 
-    const isFresh = !tabCycle || tabCycle.prefix !== prefix;
-    if (isFresh) {
+    if (!tabCycle || tabCycle.prefix !== prefix) {
       const matches = completionCandidates(prefix);
       if (matches.length === 0) {
         tabCycle = null;
@@ -113,8 +112,9 @@ export function setupTerminal(): void {
     }
 
     // Cycling through previously listed matches.
-    tabCycle.index = (tabCycle.index + 1) % tabCycle.matches.length;
-    input.value = tabCycle.matches[tabCycle.index];
+    const cycle = tabCycle;
+    cycle.index = (cycle.index + 1) % cycle.matches.length;
+    input.value = cycle.matches[cycle.index];
   };
 
   input.addEventListener('keydown', (event) => {
