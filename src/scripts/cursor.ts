@@ -76,11 +76,15 @@ export function setupCustomCursor(): void {
     const target = event.target;
     if (!(target instanceof Element)) return;
 
+    // Both classes can stack — CSS resolves priority. Link wins over
+    // drag for hover (so a project card inside a drag-track shows the
+    // pointing finger), but the closed grab hand still takes over once
+    // the user is actively mousedown-dragging the track.
+    const onLink = target.closest(LINK_SELECTOR) !== null;
     const onDrag = target.closest(DRAG_SELECTOR) !== null;
-    const onLink = !onDrag && target.closest(LINK_SELECTOR) !== null;
 
-    cursor.classList.toggle('is-drag', onDrag);
     cursor.classList.toggle('is-link', onLink);
+    cursor.classList.toggle('is-drag', onDrag);
   });
 
   window.addEventListener('mousedown', () => cursor.classList.add('is-grabbing'));
