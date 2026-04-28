@@ -435,11 +435,24 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
 
   body.is-drawer-open { overflow: hidden; }
 
-  .editor__inner { grid-template-columns: 32px 1fr; }
+  .editor__inner {
+    grid-template-columns: 32px 1fr;
+    overflow: visible; /* remove desktop clip — content must not be cut on mobile */
+  }
   .editor__gutter {
     position: sticky;
-    top: 36px; /* stay below fixed titlebar */
+    top: 36px;
   }
   .editor__gutter span { padding: 0 6px 0 0; font-size: 11px; }
   .editor__content { padding: 16px 14px 60px; }
+
+  /* Titlebar breadcrumb: on sub-pages the path is long — truncate gracefully */
+  .titlebar__path {
+    overflow: hidden;
+    max-width: calc(100% - 110px); /* leave room for lights + hamburger */
+    white-space: nowrap;
+  }
+  .titlebar__path .path-segment:not(.is-active),
+  .titlebar__path .titlebar__path-sep,
+  .titlebar__path .titlebar__path-branch { display: none; }
 }

@@ -9,7 +9,7 @@ stack:
   - Express
 demo: https://retos.redflox.com/
 cover: ../../assets/images/retos.png
-caseStudy: false
+caseStudy: true
 
 summary:
   es: Plataforma web para consultar y desplegar retos de programación que resolví en distintas plataformas.

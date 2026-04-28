@@ -9,7 +9,7 @@ stack:
   - JavaScript
 repo: https://github.com/redflox/gifex
 cover: ../../assets/images/gifex.png
-caseStudy: false
+caseStudy: true
 
 summary:
   es: App web para buscar y ver gifs animados, consumiendo la API de Giphy.
