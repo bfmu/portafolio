@@ -489,6 +489,20 @@
   /* Experience: slightly less padding for the timeline indent */
   .timeline { padding-left: 20px; }
   .exp { padding: 14px 0 18px; }
+
+  /* Footer: the git-log row is too long for mobile — hide it */
+  .foot .row:last-child { display: none; }
+
+  /* Social buttons: email address can be long, ensure it truncates */
+  .social-btn {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .social-btn span:not(.ico):not(.arrow) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .contact-card {

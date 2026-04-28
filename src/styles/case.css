@@ -225,10 +225,17 @@
   .md h2 { margin-top: 36px; font-size: 19px; }
   .md h3 { margin-top: 20px; }
 
-  /* Code blocks: use overflow:clip so border-radius holds but the inner
-     <pre overflow-x:auto> can still scroll on iOS without being blocked */
-  .code-block { overflow: clip; }
-  .code-block pre { overflow-x: auto; }
+  /* Code blocks: BFC containment so <pre> can't push the box wider than the
+     viewport. overflow:hidden creates the BFC; max-width:100% caps the block;
+     the inner <pre> scrolls horizontally within that constrained width. */
+  .code-block {
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .code-block pre {
+    max-width: 100%; /* constrain to code-block, not to content */
+    overflow-x: auto;
+  }
   .code-block pre, .code-block pre code { font-size: 11.5px; }
 
   /* Hero media: constrain browser-chrome mockup */
