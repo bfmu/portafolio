@@ -490,13 +490,24 @@
   .proj-scroller__hint .key,
   .proj-scroller__hint .dim { display: none; }
 
-  /* ls -la list: hide PERMS and SIZE — keep YEAR, NAME, OPEN */
-  .ls-header,
-  .ls-row { grid-template-columns: 52px 1fr auto; gap: 10px; }
-  .ls-header .col:nth-child(1),
-  .ls-header .col:nth-child(2),
+  /* ls -la list: columns don't fit — stack each row as a file entry.
+     Name + year share the top line, desc/chips run full width, and the
+     open affordance sits bottom-right, level with the chips. */
+  .ls-header { display: none; }
+  .ls-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "entry date"
+      "entry open";
+    align-items: start;
+    gap: 0 12px;
+    padding: 14px 8px;
+  }
   .ls-row .perms,
   .ls-row .size { display: none; }
+  .ls-row .entry { grid-area: entry; min-width: 0; }
+  .ls-row .date { grid-area: date; align-self: start; }
+  .ls-row .open { grid-area: open; align-self: end; }
 
   /* Experience: slightly less padding for the timeline indent */
   .timeline { padding-left: 20px; }
