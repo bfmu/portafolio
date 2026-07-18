@@ -468,6 +468,18 @@
 
 /* ---------- Mobile (≤640px) --------------------------------------------- */
 @media (max-width: 640px) {
+  /* Hero terminal lines: wrap like a real terminal instead of ellipsizing —
+     truncating eats half the greeting on narrow screens */
+  .hero__terminal-line {
+    white-space: normal;
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+  .hero__terminal-line > span:last-child {
+    overflow: visible;
+    white-space: normal;
+  }
+
   /* Section heading: hide the decorative $ command on the right */
   .section__heading .meta { display: none; }
 

@@ -5,9 +5,11 @@
    ============================================================================ */
 
 .ide {
+  --titlebar-h: 36px;
+  --statusbar-h: 24px;
   display: grid;
   grid-template-columns: 260px 1fr;
-  grid-template-rows: 36px 1fr 24px;
+  grid-template-rows: var(--titlebar-h) 1fr var(--statusbar-h);
   grid-template-areas:
     "titlebar titlebar"
     "sidebar  main"
@@ -24,6 +26,10 @@
 /* ---------- Title bar ---------------------------------------------------- */
 .titlebar {
   grid-area: titlebar;
+  /* Explicit height: on mobile the bar is position:fixed (out of flow), so
+     without this it shrinks to content (~27px) and every offset that assumes
+     the shared height (drawer top, gutter sticky, main padding) drifts. */
+  height: var(--titlebar-h);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -266,7 +272,10 @@
   min-height: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+  /* clip, NOT hidden: overflow:hidden turns this box into a scroll container,
+     which hijacks position:sticky descendants (case TOC) away from .editor —
+     the box never scrolls, so sticky silently stops working. */
+  overflow: clip;
 }
 .editor__gutter {
   border-right: 1px solid var(--border);
@@ -303,6 +312,7 @@
 /* ---------- Status bar --------------------------------------------------- */
 .statusbar {
   grid-area: status;
+  height: var(--statusbar-h);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -365,12 +375,12 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
      model breaks touch scroll on iOS. The titlebar and statusbar become
      position:fixed so they stay visible while the document scrolls. */
   .ide {
+    /* Titlebar and statusbar are position:fixed here (out of flow), so the
+       grid must NOT reserve rows for them — .main's padding is the single
+       source of compensation. Reserving rows AND padding doubles the offset. */
     grid-template-columns: 1fr;
-    grid-template-rows: 36px 1fr 24px;
-    grid-template-areas:
-      "titlebar"
-      "main"
-      "status";
+    grid-template-rows: 1fr;
+    grid-template-areas: "main";
     height: auto;
     min-height: 100svh;
     overflow: visible;
@@ -403,8 +413,8 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   /* Compensate for fixed titlebar/statusbar so content isn't hidden under them */
   .main {
     overflow: visible;
-    padding-top: 36px;
-    padding-bottom: 24px;
+    padding-top: var(--titlebar-h);
+    padding-bottom: var(--statusbar-h);
   }
 
   .editor {
@@ -418,9 +428,9 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   /* Sidebar slides in as an overlay drawer */
   .sidebar {
     position: fixed;
-    top: 36px;
+    top: var(--titlebar-h);
     left: 0;
-    bottom: 24px;
+    bottom: var(--statusbar-h);
     width: min(280px, 82vw);
     z-index: 100;
     transform: translateX(-105%);
@@ -441,7 +451,7 @@ html:not([data-lang]) .statusbar__lang-pill[data-lang-pill="es"] {
   }
   .editor__gutter {
     position: sticky;
-    top: 36px;
+    top: var(--titlebar-h);
   }
   .editor__gutter span { padding: 0 6px 0 0; font-size: 11px; }
   .editor__content {

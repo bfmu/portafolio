@@ -151,11 +151,14 @@
 /* ---------- Layout: TOC + body ----------------------------------------- */
 .case-body {
   display: grid;
-  grid-template-columns: 1fr;
+  /* minmax(0, 1fr): a bare 1fr track can never shrink below the min-content
+     of its item (the unwrappable <pre> inside .md), which forces the whole
+     article wider than the viewport on mobile and clips the text. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 32px;
 }
 @media (min-width: 1080px) {
-  .case-body { grid-template-columns: 180px 1fr; align-items: start; }
+  .case-body { grid-template-columns: 180px minmax(0, 1fr); align-items: start; }
 }
 
 .case-toc {
