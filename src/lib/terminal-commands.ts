@@ -181,7 +181,7 @@ export const COMMANDS: Command[] = [
       ctx.print([
         '<span class="dim">✉</span>  email:    <a href="mailto:bfmumo@gmail.com">bfmumo@gmail.com</a>',
         '<span class="dim">🔗</span> linkedin: <a href="https://www.linkedin.com/in/bfmunozm96/" target="_blank" rel="noopener">/in/bfmunozm96</a>',
-        '<span class="dim">🐙</span> github:   <a href="https://github.com/redflox" target="_blank" rel="noopener">@redflox</a>',
+        '<span class="dim">🐙</span> github:   <a href="https://github.com/bfmu" target="_blank" rel="noopener">@bfmu</a>',
         '<span class="dim">🌐</span> website:  <a href="https://bfmu.dev/" target="_blank" rel="noopener">bfmu.dev</a>',
       ]);
     },
