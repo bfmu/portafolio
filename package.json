@@ -2,6 +2,13 @@
   "name": "porfolio-dev",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
