@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'astro.config.mjs'
+      - 'tailwind.config.mjs'
+      - 'tsconfig.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - '.github/workflows/deploy.yml'
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to prod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/docker/github/portfolio
+            git pull --ff-only origin develop
+            docker compose up -d --build
+            docker image prune -f
+            echo "Deploy OK — $(date)"
